@@ -1,0 +1,37 @@
+{
+  "id": "dev-team",
+  "name": "Dev Team",
+  "description": "Softwarový vývojový tým — PM, Architect, Developer, Tester, Reviewer, Scrum Master, Sysadmin",
+  "version": "0.1.0",
+  "agents": [
+    "pm",
+    "architect",
+    "developer",
+    "tester",
+    "reviewer",
+    "scrum-master",
+    "sysadmin"
+  ],
+  "repos": [
+    {
+      "id": "web-ui",
+      "name": "nano-agent-team Web UI",
+      "url": "git@github.com:nano-agent-team/web-ui.git",
+      "default": true,
+      "stack": "Vue 3 + Vite + TypeScript",
+      "main_branch": "main"
+    }
+  ],
+  "api_url": "http://localhost:3001",
+  "pipeline": {
+    "topics": {
+      "ticket_new": "topic.ticket.new",
+      "ticket_approved": "topic.ticket.approved",
+      "ticket_spec_ready": "topic.ticket.spec-ready",
+      "pr_opened": "topic.pr.opened",
+      "pr_approved": "topic.pr.approved",
+      "deploy_ready": "topic.deploy.ready",
+      "health_check": "topic.health.check"
+    }
+  }
+}

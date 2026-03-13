@@ -1,0 +1,18 @@
+{
+  "requires": [
+    {
+      "key": "repo_url",
+      "label": "GitHub repo URL",
+      "type": "text",
+      "shared": true,
+      "placeholder": "git@github.com:org/repo.git"
+    },
+    {
+      "key": "ssh_key",
+      "label": "SSH klíč pro Git",
+      "type": "generate_ssh",
+      "shared": true,
+      "help": "Vygenerujeme keypair. Public key přidej do GitHub Deploy Keys."
+    }
+  ]
+}
