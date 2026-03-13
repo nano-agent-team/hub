@@ -3,6 +3,7 @@
   "name": "Issue Tracker",
   "description": "Ticketovací systém s kanbanem, komentáři a pipeline integrací",
   "version": "0.1.0",
+  "plugin": "./plugin.mjs",
   "components": [
     {
       "type": "node-plugin",
