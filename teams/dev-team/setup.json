@@ -13,6 +13,15 @@
       "type": "generate_ssh",
       "shared": true,
       "help": "Vygenerujeme keypair. Public key přidej do GitHub Deploy Keys."
+    },
+    {
+      "key": "gh_token",
+      "label": "GitHub token (volitelné)",
+      "type": "password",
+      "shared": true,
+      "optional": true,
+      "placeholder": "ghp_...",
+      "help": "Pro vytváření a mergování PR přes gh CLI. Zatím jen GitHub, v budoucnu i jiné platformy."
     }
   ]
 }
