@@ -5,23 +5,16 @@
       "label": "GitHub repo URL",
       "type": "text",
       "shared": true,
-      "placeholder": "git@github.com:org/repo.git"
-    },
-    {
-      "key": "ssh_key",
-      "label": "SSH klíč pro Git",
-      "type": "generate_ssh",
-      "shared": true,
-      "help": "Vygenerujeme keypair. Public key přidej do GitHub Deploy Keys."
+      "placeholder": "https://github.com/org/repo",
+      "help": "URL repozitáře kde agenti budou pracovat."
     },
     {
       "key": "gh_token",
-      "label": "GitHub token (volitelné)",
+      "label": "GitHub Personal Access Token",
       "type": "password",
       "shared": true,
-      "optional": true,
       "placeholder": "ghp_...",
-      "help": "Pro vytváření a mergování PR přes gh CLI. Zatím jen GitHub, v budoucnu i jiné platformy."
+      "help": "Token se použije pro git clone, push i vytváření PR. Potřebná oprávnění: repo, workflow."
     }
   ]
 }
