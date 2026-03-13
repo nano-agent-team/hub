@@ -1,0 +1,18 @@
+{
+  "id": "issue-tracker",
+  "name": "Issue Tracker",
+  "description": "Ticketovací systém s kanbanem, komentáři a pipeline integrací",
+  "version": "0.1.0",
+  "components": [
+    {
+      "type": "node-plugin",
+      "path": "plugin/",
+      "build": "npm ci && npm run build"
+    },
+    {
+      "type": "frontend-plugin",
+      "path": "frontend/",
+      "build": "npm ci && npm run build"
+    }
+  ]
+}

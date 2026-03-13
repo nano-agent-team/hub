@@ -3,15 +3,8 @@
   "name": "Dev Team",
   "description": "Softwarový vývojový tým — PM, Architect, Developer, Tester, Reviewer, Scrum Master, Sysadmin",
   "version": "0.1.0",
-  "agents": [
-    "pm",
-    "architect",
-    "developer",
-    "tester",
-    "reviewer",
-    "scrum-master",
-    "sysadmin"
-  ],
+  "agents": ["pm", "architect", "developer", "tester", "reviewer", "scrum-master", "sysadmin"],
+  "features": ["issue-tracker"],
   "repos": [
     {
       "id": "web-ui",
@@ -22,7 +15,6 @@
       "main_branch": "main"
     }
   ],
-  "api_url": "http://localhost:3001",
   "pipeline": {
     "topics": {
       "ticket_new": "topic.ticket.new",
