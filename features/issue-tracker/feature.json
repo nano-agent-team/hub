@@ -8,12 +8,12 @@
     {
       "type": "node-plugin",
       "path": "plugin/",
-      "build": "npm ci && npm run build"
+      "build": "npm install && npm run build:ts"
     },
     {
       "type": "frontend-plugin",
       "path": "frontend/",
-      "build": "npm ci && npm run build"
+      "build": "npm install && npm run build"
     }
   ]
 }
