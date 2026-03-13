@@ -1,0 +1,15 @@
+{
+  "id": "architect",
+  "name": "Software Architect",
+  "version": "0.1.0",
+  "description": "Píše technický spec do ticket body, navrhuje architekturu řešení",
+  "model": "claude-opus-4-5",
+  "session_type": "stateless",
+  "subscribe_topics": [
+    "agent.architect.inbox",
+    "topic.ticket.approved"
+  ],
+  "publish_topics": [
+    "topic.ticket.spec-ready"
+  ]
+}

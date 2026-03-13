@@ -1,0 +1,16 @@
+{
+  "id": "tester",
+  "name": "QA Tester",
+  "version": "0.1.0",
+  "description": "Builduje a testuje PR dle acceptance criteria ze spec",
+  "model": "claude-sonnet-4-5",
+  "session_type": "stateless",
+  "workspace": true,
+  "subscribe_topics": [
+    "agent.tester.inbox",
+    "topic.pr.opened"
+  ],
+  "publish_topics": [
+    "topic.pr.approved"
+  ]
+}

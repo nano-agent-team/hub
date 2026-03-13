@@ -1,0 +1,15 @@
+{
+  "id": "reviewer",
+  "name": "Code Reviewer",
+  "version": "0.1.0",
+  "description": "Code review PR — kvalita kódu, AC check, best practices",
+  "model": "claude-opus-4-5",
+  "session_type": "stateless",
+  "subscribe_topics": [
+    "agent.reviewer.inbox",
+    "topic.pr.opened"
+  ],
+  "publish_topics": [
+    "topic.pr.approved"
+  ]
+}
