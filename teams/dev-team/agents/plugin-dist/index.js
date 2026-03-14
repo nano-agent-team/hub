@@ -127,32 +127,23 @@ const plugin = {
                 res.status(500).json({ error: String(err) });
             }
         });
-        // ── Plugin registry endpoint (used by core dashboard) ────────────────────
-        // Register this plugin in the global plugin list.
-        // install.sh copies frontend/dist → agents/frontend-dist/
-        // __dirname is agents/plugin-dist/ → ../frontend-dist = agents/frontend-dist/
-        // Module Federation remote entry: assets/remoteEntry.js (Vite default)
+        // ── Register plugin in core (used by dashboard for dynamic UI) ───────────
         const frontendDist = path.join(__dirname, '..', 'frontend-dist');
         const hasFrontend = fs.existsSync(path.join(frontendDist, 'assets', 'remoteEntry.js'));
-        app.get('/api/plugins', (_req, res) => {
-            res.json([
-                {
-                    id: 'dev-team',
-                    name: 'Dev Team',
-                    // uiEntry points to the Module Federation remoteEntry.js
-                    // Core dashboard vite.config.ts maps devTeamPlugin → this URL
-                    uiEntry: hasFrontend ? '/plugins/dev-team/assets/remoteEntry.js' : null,
-                },
-            ]);
-        });
-        // ── Serve plugin frontend (if built) ──────────────────────────────────────
         if (hasFrontend) {
             const express = (await import('express')).default;
             app.use('/plugins/dev-team', express.static(frontendDist));
             console.log('[dev-team plugin] Serving federation remote from', frontendDist);
         }
-        else {
-            console.log('[dev-team plugin] Frontend not built — run: cd frontend && npm run build && ./install.sh');
+        if (opts.registerPlugin) {
+            opts.registerPlugin({
+                id: 'dev-team',
+                name: 'Dev Team',
+                uiEntry: hasFrontend ? '/plugins/dev-team/assets/remoteEntry.js' : null,
+                routes: [
+                    { path: '/tickets', component: 'TicketsView', nav: { label: 'Tickets', icon: '🎫' } },
+                ],
+            });
         }
         console.log('[dev-team plugin] Tickets API registered (/api/tickets)');
     },
