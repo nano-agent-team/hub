@@ -4,7 +4,7 @@
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
-export const DB_PATH = process.env.DB_PATH ?? path.join(process.env.HOME ?? '/root', 'nano-agent-team', 'data', 'nano-agent-team.db');
+export const DB_PATH = process.env.DB_PATH ?? path.join(process.env.DATA_DIR ?? path.join(process.env.HOME ?? '/root', 'nano-agent-team', 'data'), 'nano-agent-team.db');
 let db;
 export function openDb() {
     if (db)
