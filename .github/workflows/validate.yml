@@ -35,6 +35,7 @@ jobs:
 
           const TEAM_REQUIRED = ['id', 'name', 'version', 'description', 'agents'];
           const MANIFEST_REQUIRED = ['id', 'name', 'version', 'description'];
+          const VALID_STATUSES = ['stable', 'beta', 'experimental', 'deprecated'];
 
           let errors = 0;
 
@@ -45,6 +46,10 @@ jobs:
                 console.error(`❌ ${file}: missing required field "${field}"`);
                 errors++;
               }
+            }
+            if (data.status !== undefined && !VALID_STATUSES.includes(data.status)) {
+              console.error(`❌ ${file}: invalid status "${data.status}" (allowed: ${VALID_STATUSES.join(', ')})`);
+              errors++;
             }
           }
 

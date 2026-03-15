@@ -54,6 +54,15 @@ teams/{your-team-id}/
 
 Required fields: `id`, `name`, `version`, `description`, `agents`.
 
+Optional field `status` — defaults to `stable` if omitted:
+
+| Value | Meaning |
+|---|---|
+| `stable` | Production ready, maintained |
+| `beta` | Usable but API/behavior may change |
+| `experimental` | Work in progress, use at your own risk |
+| `deprecated` | No longer maintained, will be removed |
+
 ### 3. setup.json
 
 Defines configuration fields shown in the setup wizard:
@@ -90,6 +99,8 @@ Field types: `text`, `secret`, `generate_ssh`.
 ```
 
 Required fields: `id`, `name`, `version`, `description`.
+
+Optional `status` field — same values as for teams (`stable`, `beta`, `experimental`, `deprecated`), defaults to `stable`.
 
 ### 5. CLAUDE.md (system prompt)
 

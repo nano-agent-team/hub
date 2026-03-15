@@ -3,6 +3,7 @@
   "name": "GitHub Management Team",
   "description": "Multi-agent team for automated GitHub repository management: PR reviews, feature development, vision alignment, and discussion moderation",
   "version": "0.1.0",
+  "status": "experimental",
   "agents": [
     "pr-reviewer",
     "developer",
