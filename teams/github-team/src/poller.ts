@@ -52,6 +52,9 @@ export class Poller {
     const cursor = this.state.getRepoCursor(repo);
     const [owner, repoName] = repo.split('/');
 
+    // Fetch a fresh installation token once per poll cycle so agents can use gh CLI
+    const ghToken = await this.client.getInstallationToken();
+
     // ── Pull Requests ────────────────────────────────────────────────────────
     const prs = await this.client.get<GitHubPR[]>(
       `/repos/${owner}/${repoName}/pulls?state=open&sort=updated&direction=desc&per_page=50`,
@@ -63,7 +66,7 @@ export class Poller {
       if (pr.updated_at > latestPrUpdate) latestPrUpdate = pr.updated_at;
 
       const eventType = pr.created_at > cursor.prs_since ? 'opened' : 'synchronized';
-      const event = prToNats(repo, pr, eventType);
+      const event = prToNats(repo, pr, eventType, ghToken);
       await this.publish(event.topic, JSON.stringify(event.payload));
       console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo}`);
     }
@@ -80,7 +83,7 @@ export class Poller {
       if (issue.updated_at > latestIssueUpdate) latestIssueUpdate = issue.updated_at;
 
       if (issue.created_at > cursor.issues_since) {
-        const event = issueToNats(repo, issue);
+        const event = issueToNats(repo, issue, ghToken);
         await this.publish(event.topic, JSON.stringify(event.payload));
         console.log(`[github-team poller] ${event.topic} Issue#${issue.number} in ${repo}`);
       }
@@ -91,7 +94,7 @@ export class Poller {
       );
       for (const comment of comments) {
         if (comment.created_at <= cursor.issues_since) continue;
-        const event = commentToNats(repo, issue.number, comment);
+        const event = commentToNats(repo, issue.number, comment, ghToken);
         await this.publish(event.topic, JSON.stringify(event.payload));
         console.log(
           `[github-team poller] ${event.topic} comment#${comment.id} on Issue#${issue.number}`,

@@ -44,6 +44,6 @@ export interface GitHubComment {
     created_at: string;
     updated_at: string;
 }
-export declare function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'synchronized'): NatsEvent;
-export declare function issueToNats(repo: string, issue: GitHubIssue): NatsEvent;
-export declare function commentToNats(repo: string, issueNumber: number, comment: GitHubComment): NatsEvent;
+export declare function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'synchronized', ghToken?: string): NatsEvent;
+export declare function issueToNats(repo: string, issue: GitHubIssue, ghToken?: string): NatsEvent;
+export declare function commentToNats(repo: string, issueNumber: number, comment: GitHubComment, ghToken?: string): NatsEvent;

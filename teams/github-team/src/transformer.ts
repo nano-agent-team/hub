@@ -37,7 +37,7 @@ export interface GitHubComment {
   updated_at: string;
 }
 
-export function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'synchronized'): NatsEvent {
+export function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'synchronized', ghToken?: string): NatsEvent {
   const topic = eventType === 'opened' ? 'topic.github.pr.opened' : 'topic.github.pr.synchronized';
   return {
     topic,
@@ -50,11 +50,12 @@ export function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'sync
       head_branch: pr.head.ref,
       sha: pr.head.sha,
       url: pr.html_url,
+      ...(ghToken ? { gh_token: ghToken } : {}),
     },
   };
 }
 
-export function issueToNats(repo: string, issue: GitHubIssue): NatsEvent {
+export function issueToNats(repo: string, issue: GitHubIssue, ghToken?: string): NatsEvent {
   return {
     topic: 'topic.github.issue.opened',
     payload: {
@@ -64,11 +65,12 @@ export function issueToNats(repo: string, issue: GitHubIssue): NatsEvent {
       body: issue.body,
       author: issue.user.login,
       url: issue.html_url,
+      ...(ghToken ? { gh_token: ghToken } : {}),
     },
   };
 }
 
-export function commentToNats(repo: string, issueNumber: number, comment: GitHubComment): NatsEvent {
+export function commentToNats(repo: string, issueNumber: number, comment: GitHubComment, ghToken?: string): NatsEvent {
   return {
     topic: 'topic.github.issue.comment',
     payload: {
@@ -78,6 +80,7 @@ export function commentToNats(repo: string, issueNumber: number, comment: GitHub
       body: comment.body,
       author: comment.user.login,
       url: comment.html_url,
+      ...(ghToken ? { gh_token: ghToken } : {}),
     },
   };
 }

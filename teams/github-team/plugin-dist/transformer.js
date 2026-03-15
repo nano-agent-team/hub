@@ -1,4 +1,4 @@
-export function prToNats(repo, pr, eventType) {
+export function prToNats(repo, pr, eventType, ghToken) {
     const topic = eventType === 'opened' ? 'topic.github.pr.opened' : 'topic.github.pr.synchronized';
     return {
         topic,
@@ -11,10 +11,11 @@ export function prToNats(repo, pr, eventType) {
             head_branch: pr.head.ref,
             sha: pr.head.sha,
             url: pr.html_url,
+            ...(ghToken ? { gh_token: ghToken } : {}),
         },
     };
 }
-export function issueToNats(repo, issue) {
+export function issueToNats(repo, issue, ghToken) {
     return {
         topic: 'topic.github.issue.opened',
         payload: {
@@ -24,10 +25,11 @@ export function issueToNats(repo, issue) {
             body: issue.body,
             author: issue.user.login,
             url: issue.html_url,
+            ...(ghToken ? { gh_token: ghToken } : {}),
         },
     };
 }
-export function commentToNats(repo, issueNumber, comment) {
+export function commentToNats(repo, issueNumber, comment, ghToken) {
     return {
         topic: 'topic.github.issue.comment',
         payload: {
@@ -37,6 +39,7 @@ export function commentToNats(repo, issueNumber, comment) {
             body: comment.body,
             author: comment.user.login,
             url: comment.html_url,
+            ...(ghToken ? { gh_token: ghToken } : {}),
         },
     };
 }
