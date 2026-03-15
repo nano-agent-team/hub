@@ -11,10 +11,12 @@ Browse, install, and contribute multi-agent AI teams — each team is a self-con
 
 ## Available Teams
 
-| Team | Agents | Description |
-|---|---|---|
-| [dev-team](teams/dev-team/) | PM, Architect, Developer, Tester, Reviewer, Scrum Master | Full software development lifecycle via ticket-driven workflow |
-| [github-team](teams/github-team/) | PR Reviewer, Developer, Vision Keeper, Discussion Facilitator | Automated GitHub repo management: PR reviews, issue triage, vision alignment |
+| Team | Status | Agents | Description |
+|---|---|---|---|
+| [dev-team](teams/dev-team/) | stable | PM, Architect, Developer, Tester, Reviewer, Scrum Master | Full software development lifecycle via ticket-driven workflow |
+| [github-team](teams/github-team/) | experimental | PR Reviewer, Developer, Vision Keeper, Discussion Facilitator | Automated GitHub repo management: PR reviews, issue triage, vision alignment |
+
+**Status:** `stable` — production ready · `beta` — usable but may change · `experimental` — work in progress · `deprecated` — no longer maintained
 
 ---
 

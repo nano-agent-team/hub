@@ -3,6 +3,7 @@
   "name": "Dev Team",
   "description": "Softwarový vývojový tým — PM, Architect, Developer, Tester, Reviewer, Scrum Master",
   "version": "0.1.0",
+  "status": "stable",
   "agents": [
     "pm",
     "architect",

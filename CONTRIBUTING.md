@@ -54,6 +54,15 @@ teams/{your-team-id}/
 
 Required fields: `id`, `name`, `version`, `description`, `agents`.
 
+Optional field `status` — defaults to `stable` if omitted:
+
+| Value | Meaning |
+|---|---|
+| `stable` | Production ready, maintained |
+| `beta` | Usable but API/behavior may change |
+| `experimental` | Work in progress, use at your own risk |
+| `deprecated` | No longer maintained, will be removed |
+
 ### 3. setup.json
 
 Defines configuration fields shown in the setup wizard:
