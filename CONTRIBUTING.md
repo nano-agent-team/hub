@@ -6,6 +6,19 @@ Thank you for contributing to the hub catalog! This guide explains how to add a 
 
 No dependencies required — the hub is a catalog of JSON manifests and Markdown system prompts. You just need a text editor and Git.
 
+## Agent Scopes
+
+Agents can live in two places:
+
+| Scope | Location | When to use |
+|---|---|---|
+| Team agent | `teams/{team-id}/agents/{agent-id}/` | Agent belongs to one team, uses team-specific context and NATS topics |
+| General agent | `agents/{agent-id}/` | Agent is reusable across teams or deployed standalone |
+
+Both require the same files: `manifest.json` + `CLAUDE.md`.
+
+---
+
 ## Adding a New Team
 
 ### 1. Required Structure
@@ -85,6 +98,22 @@ Write a clear, structured system prompt. Include:
 - Available tools (MCP servers, NATS topics)
 - Responsibilities and workflow
 - Response format
+
+## Adding a General Agent
+
+For agents not tied to a specific team, place them under `agents/{agent-id}/`:
+
+```
+agents/
+  {agent-id}/
+    manifest.json
+    CLAUDE.md
+    Dockerfile   ← optional
+```
+
+The `manifest.json` format is the same as for team agents. For NATS topics, use generic names or make them configurable via `setup.json`.
+
+---
 
 ## Naming Conventions
 

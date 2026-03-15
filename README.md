@@ -49,9 +49,17 @@ teams/
       {agent-id}/
         manifest.json  — agent manifest (id, name, model, subscribe/publish topics)
         CLAUDE.md      — system prompt
-        Dockerfile     — (optional) custom container for agents that need extra tools
-    frontend/
-      dist/            — pre-built Module Federation remote (loaded by dashboard)
+        Dockerfile     — (optional) custom container
+
+agents/                — standalone agents reusable across multiple teams
+  {agent-id}/
+    manifest.json
+    CLAUDE.md
+
+features/              — frontend + backend plugins extending the dashboard
+  {feature-id}/
+    plugin.mjs         — backend plugin
+    frontend/dist/     — pre-built Module Federation remote
 ```
 
 ---

@@ -24,10 +24,10 @@ jobs:
             else
               echo "✅ $file"
             fi
-          done < <(find teams -name "*.json" -print0)
+          done < <(find teams agents -name "*.json" -print0 2>/dev/null)
           exit $error
 
-      - name: Validate team.json required fields
+      - name: Validate manifests required fields
         run: |
           node - <<'EOF'
           const fs = require('fs');
@@ -48,23 +48,29 @@ jobs:
             }
           }
 
-          // Validate team.json files
-          const teams = fs.readdirSync('teams');
-          for (const team of teams) {
-            const teamJson = path.join('teams', team, 'team.json');
-            if (fs.existsSync(teamJson)) {
-              check(teamJson, TEAM_REQUIRED);
+          function isDir(p) { try { return fs.statSync(p).isDirectory(); } catch { return false; } }
 
-              // Validate manifest.json for each agent
+          // Validate team.json + team agents
+          if (fs.existsSync('teams')) {
+            for (const team of fs.readdirSync('teams').filter(t => isDir(path.join('teams', t)))) {
+              const teamJson = path.join('teams', team, 'team.json');
+              if (fs.existsSync(teamJson)) check(teamJson, TEAM_REQUIRED);
+
               const agentsDir = path.join('teams', team, 'agents');
               if (fs.existsSync(agentsDir)) {
-                for (const agent of fs.readdirSync(agentsDir)) {
+                for (const agent of fs.readdirSync(agentsDir).filter(a => isDir(path.join(agentsDir, a)))) {
                   const manifestJson = path.join(agentsDir, agent, 'manifest.json');
-                  if (fs.existsSync(manifestJson)) {
-                    check(manifestJson, MANIFEST_REQUIRED);
-                  }
+                  if (fs.existsSync(manifestJson)) check(manifestJson, MANIFEST_REQUIRED);
                 }
               }
+            }
+          }
+
+          // Validate top-level general agents
+          if (fs.existsSync('agents')) {
+            for (const agent of fs.readdirSync('agents').filter(a => isDir(path.join('agents', a)))) {
+              const manifestJson = path.join('agents', agent, 'manifest.json');
+              if (fs.existsSync(manifestJson)) check(manifestJson, MANIFEST_REQUIRED);
             }
           }
 
@@ -76,7 +82,7 @@ jobs:
           }
           EOF
 
-      - name: Check required files per team
+      - name: Check required files per team and agent
         run: |
           node - <<'EOF'
           const fs = require('fs');
@@ -84,34 +90,40 @@ jobs:
 
           let errors = 0;
 
-          const teams = fs.readdirSync('teams').filter(t =>
-            fs.statSync(path.join('teams', t)).isDirectory()
-          );
+          function isDir(p) { try { return fs.statSync(p).isDirectory(); } catch { return false; } }
 
-          for (const team of teams) {
-            const teamDir = path.join('teams', team);
-
-            for (const required of ['team.json', 'setup.json']) {
-              if (!fs.existsSync(path.join(teamDir, required))) {
-                console.error(`❌ teams/${team}: missing ${required}`);
+          function checkAgent(agentDir, label) {
+            for (const required of ['manifest.json', 'CLAUDE.md']) {
+              if (!fs.existsSync(path.join(agentDir, required))) {
+                console.error(`❌ ${label}: missing ${required}`);
                 errors++;
               }
             }
+          }
 
-            const agentsDir = path.join(teamDir, 'agents');
-            if (fs.existsSync(agentsDir)) {
-              const agents = fs.readdirSync(agentsDir).filter(a =>
-                fs.statSync(path.join(agentsDir, a)).isDirectory()
-              );
-              for (const agent of agents) {
-                const agentDir = path.join(agentsDir, agent);
-                for (const required of ['manifest.json', 'CLAUDE.md']) {
-                  if (!fs.existsSync(path.join(agentDir, required))) {
-                    console.error(`❌ teams/${team}/agents/${agent}: missing ${required}`);
-                    errors++;
-                  }
+          // Check teams structure
+          if (fs.existsSync('teams')) {
+            for (const team of fs.readdirSync('teams').filter(t => isDir(path.join('teams', t)))) {
+              const teamDir = path.join('teams', team);
+              for (const required of ['team.json', 'setup.json']) {
+                if (!fs.existsSync(path.join(teamDir, required))) {
+                  console.error(`❌ teams/${team}: missing ${required}`);
+                  errors++;
                 }
               }
+              const agentsDir = path.join(teamDir, 'agents');
+              if (fs.existsSync(agentsDir)) {
+                for (const agent of fs.readdirSync(agentsDir).filter(a => isDir(path.join(agentsDir, a)))) {
+                  checkAgent(path.join(agentsDir, agent), `teams/${team}/agents/${agent}`);
+                }
+              }
+            }
+          }
+
+          // Check top-level general agents
+          if (fs.existsSync('agents')) {
+            for (const agent of fs.readdirSync('agents').filter(a => isDir(path.join('agents', a)))) {
+              checkAgent(path.join('agents', agent), `agents/${agent}`);
             }
           }
 
@@ -119,6 +131,6 @@ jobs:
             console.error(`\n${errors} structure error(s) found.`);
             process.exit(1);
           } else {
-            console.log('All team structures valid.');
+            console.log('All structures valid.');
           }
           EOF
