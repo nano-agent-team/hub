@@ -126,7 +126,7 @@ The `manifest.json` format is the same as for team agents. For NATS topics, use 
 1. Fork the repo
 2. Create a branch: `feat/{team-id}`
 3. Add your team following the structure above
-4. Run a quick sanity check: `find teams -name "*.json" | xargs -I{} node -e "require('./{}')" 2>&1`
+4. Run a quick sanity check: `find teams agents -name "*.json" | xargs -I{} node -e "require('./{}')" 2>&1`
 5. Open a PR — CI validates all JSON automatically
 
 ## Commit Conventions

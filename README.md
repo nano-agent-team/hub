@@ -27,15 +27,6 @@ Teams are installed through the nano-agent-team Setup Wizard.
 3. Fill in the required configuration fields (repo URL, credentials, etc.)
 4. The team is deployed and agents start listening on their NATS topics
 
-Alternatively, you can reference a team directly in your nano-agent-team config:
-
-```json
-{
-  "team": "dev-team",
-  "hub_url": "https://raw.githubusercontent.com/nano-agent-team/hub/main"
-}
-```
-
 ---
 
 ## Repository Structure
