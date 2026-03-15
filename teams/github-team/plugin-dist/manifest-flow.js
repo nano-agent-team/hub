@@ -1,0 +1,133 @@
+import fs from 'fs';
+import path from 'path';
+import { GitHubClient } from './github-client.js';
+export class ManifestFlow {
+    dataDir;
+    configPath;
+    constructor(dataDir) {
+        this.dataDir = dataDir;
+        this.configPath = path.join(dataDir, 'teams', 'github-team', 'app-config.json');
+    }
+    loadConfig() {
+        try {
+            const raw = fs.readFileSync(this.configPath, 'utf-8');
+            return JSON.parse(raw);
+        }
+        catch {
+            return null;
+        }
+    }
+    saveConfig(config) {
+        fs.mkdirSync(path.dirname(this.configPath), { recursive: true });
+        fs.writeFileSync(this.configPath, JSON.stringify(config, null, 2), { mode: 0o600 });
+    }
+    registerRoutes(app, onReady) {
+        // Step 1: Auto-submit form to GitHub with App manifest
+        app.get('/api/github-team/setup/start', (_req, res) => {
+            const manifest = {
+                name: 'NATE GitHub Team',
+                url: 'http://localhost:3001',
+                redirect_url: 'http://localhost:3001/api/github-team/setup/callback',
+                setup_url: 'http://localhost:3001/api/github-team/setup/installed',
+                setup_on_update: false,
+                public: false,
+                default_permissions: {
+                    pull_requests: 'write',
+                    issues: 'write',
+                    contents: 'read',
+                    metadata: 'read',
+                },
+                default_events: ['pull_request', 'issues', 'issue_comment'],
+            };
+            // Auto-submitting form — browser lands on GitHub confirmation page
+            res.send(`<!DOCTYPE html>
+<html>
+<head><title>Setting up NATE GitHub Team...</title></head>
+<body>
+  <p>Redirecting to GitHub...</p>
+  <form id="f" action="https://github.com/settings/apps/new" method="post">
+    <input type="hidden" name="manifest" value="${JSON.stringify(manifest).replace(/"/g, '&quot;')}">
+  </form>
+  <script>document.getElementById('f').submit();</script>
+</body>
+</html>`);
+        });
+        // Step 2: GitHub redirects back with ?code= after user confirms App creation
+        app.get('/api/github-team/setup/callback', (req, res) => {
+            const code = req.query['code'];
+            if (!code) {
+                res.status(400).send('Missing code parameter from GitHub.');
+                return;
+            }
+            GitHubClient.exchangeManifestCode(code)
+                .then((appData) => {
+                const config = {
+                    appId: String(appData.id),
+                    appSlug: appData.slug,
+                    privateKey: appData.pem,
+                };
+                this.saveConfig(config);
+                console.log(`[github-team] App created: ${appData.name} (id=${appData.id})`);
+                // Redirect user to install the App on their repos
+                res.redirect(`https://github.com/apps/${appData.slug}/installations/new`);
+            })
+                .catch((err) => {
+                console.error('[github-team] Manifest exchange failed:', err);
+                res.status(500).send(`Setup failed: ${String(err)}`);
+            });
+        });
+        // Step 3: GitHub redirects here with ?installation_id= after user installs App on repos
+        app.get('/api/github-team/setup/installed', (req, res) => {
+            const installationId = req.query['installation_id'];
+            if (!installationId) {
+                res.status(400).send('Missing installation_id from GitHub.');
+                return;
+            }
+            const config = this.loadConfig();
+            if (!config) {
+                res.status(400).send('App not configured yet. Please run setup first.');
+                return;
+            }
+            const client = new GitHubClient({ ...config, installationId });
+            client
+                .get('/installation/repositories')
+                .then((data) => {
+                const repos = data.repositories.map((r) => r.full_name);
+                const updated = { ...config, installationId, repos };
+                this.saveConfig(updated);
+                console.log(`[github-team] Installation ${installationId} connected. Repos: ${repos.join(', ')}`);
+                onReady(updated);
+                res.send(`<!DOCTYPE html>
+<html>
+<head><title>NATE GitHub Team Connected</title></head>
+<body>
+  <h2>✅ NATE GitHub Team connected!</h2>
+  <p>Monitoring <strong>${repos.length}</strong> repo(s):</p>
+  <ul>${repos.map((r) => `<li>${r}</li>`).join('')}</ul>
+  <p><a href="/">Back to NATE</a></p>
+</body>
+</html>`);
+            })
+                .catch((err) => {
+                console.error('[github-team] Failed to fetch repos:', err);
+                res.status(500).send(`Failed to fetch repositories: ${String(err)}`);
+            });
+        });
+        // Status endpoint — used by UI to show connection state
+        app.get('/api/github-team/setup/status', (_req, res) => {
+            const config = this.loadConfig();
+            if (!config?.installationId) {
+                res.json({ connected: false });
+                return;
+            }
+            res.json({
+                connected: true,
+                appSlug: config.appSlug,
+                installationId: config.installationId,
+                repos: config.repos ?? [],
+                pollingIntervalSec: config.pollingIntervalSec ?? 120,
+            });
+        });
+    }
+}
+//# sourceMappingURL=manifest-flow.js.map

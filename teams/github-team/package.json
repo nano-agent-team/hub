@@ -1,0 +1,14 @@
+{
+  "name": "github-team-plugin",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "plugin-dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.2"
+  }
+}
