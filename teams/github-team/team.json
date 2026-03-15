@@ -1,0 +1,34 @@
+{
+  "id": "github-team",
+  "name": "GitHub Management Team",
+  "description": "Multi-agent team for automated GitHub repository management: PR reviews, feature development, vision alignment, and discussion moderation",
+  "version": "0.1.0",
+  "agents": [
+    "pr-reviewer",
+    "developer",
+    "vision-keeper",
+    "discussion-facilitator"
+  ],
+  "repos": [],
+  "pipeline": {
+    "topics": {
+      "pr_opened": "topic.github.pr.opened",
+      "pr_synchronized": "topic.github.pr.synchronized",
+      "pr_review_completed": "topic.github.pr.review-completed",
+      "issue_opened": "topic.github.issue.opened",
+      "issue_comment": "topic.github.issue.comment",
+      "vision_verdict": "topic.github.vision.verdict"
+    }
+  },
+  "webhooks": {
+    "github": {
+      "events": [
+        "pull_request.opened",
+        "pull_request.synchronize",
+        "issues.opened",
+        "issue_comment.created"
+      ],
+      "endpoint": "/webhooks/github"
+    }
+  }
+}

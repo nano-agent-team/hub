@@ -1,0 +1,17 @@
+{
+  "id": "pr-reviewer",
+  "name": "PR Reviewer",
+  "version": "0.1.0",
+  "description": "Automated code reviewer for pull requests: checks quality, conventions, security, and best practices",
+  "model": "claude-sonnet-4-5",
+  "session_type": "stateless",
+  "workspace": false,
+  "ssh_mount": false,
+  "subscribe_topics": [
+    "topic.github.pr.opened",
+    "topic.github.pr.synchronized"
+  ],
+  "publish_topics": [
+    "topic.github.pr.review-completed"
+  ]
+}
