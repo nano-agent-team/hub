@@ -100,6 +100,8 @@ Field types: `text`, `secret`, `generate_ssh`.
 
 Required fields: `id`, `name`, `version`, `description`.
 
+Optional `status` field — same values as for teams (`stable`, `beta`, `experimental`, `deprecated`), defaults to `stable`.
+
 ### 5. CLAUDE.md (system prompt)
 
 Write a clear, structured system prompt. Include:
