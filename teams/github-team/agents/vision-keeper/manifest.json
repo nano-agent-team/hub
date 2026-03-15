@@ -1,0 +1,18 @@
+{
+  "id": "vision-keeper",
+  "name": "Vision Keeper",
+  "version": "0.1.0",
+  "description": "Evaluates features and issues against project vision, ensures alignment with mission and principles",
+  "model": "claude-sonnet-4-5",
+  "session_type": "stateless",
+  "workspace": false,
+  "ssh_mount": false,
+  "subscribe_topics": [
+    "topic.github.issue.opened",
+    "topic.github.pr.opened",
+    "topic.github.vision.check"
+  ],
+  "publish_topics": [
+    "topic.github.vision.verdict"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "discussion-facilitator",
+  "name": "Discussion Facilitator",
+  "version": "0.1.0",
+  "description": "Moderates GitHub discussions, summarizes long threads, proposes next steps, escalates when needed",
+  "model": "claude-sonnet-4-5",
+  "session_type": "stateless",
+  "workspace": false,
+  "ssh_mount": false,
+  "subscribe_topics": [
+    "topic.github.issue.comment"
+  ],
+  "publish_topics": [
+    "topic.github.discussion.summary"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "id": "developer",
+  "name": "Feature Developer",
+  "version": "0.1.0",
+  "description": "Implements features based on specifications, creates PRs, responds to review feedback",
+  "model": "claude-sonnet-4-5",
+  "session_type": "stateless",
+  "workspace": true,
+  "ssh_mount": true,
+  "subscribe_topics": [
+    "topic.ticket.spec-ready",
+    "topic.github.pr.review-completed"
+  ],
+  "publish_topics": [
+    "topic.github.pr.opened"
+  ]
+}
