@@ -1,7 +1,7 @@
 {
   "id": "dev-team",
   "name": "Dev Team",
-  "description": "Softwarový vývojový tým — PM, Architect, Developer, Tester, Reviewer, Scrum Master, Sysadmin",
+  "description": "Softwarový vývojový tým — PM, Architect, Developer, Tester, Reviewer, Scrum Master",
   "version": "0.1.0",
   "agents": [
     "pm",
@@ -9,8 +9,7 @@
     "developer",
     "tester",
     "reviewer",
-    "scrum-master",
-    "sysadmin"
+    "scrum-master"
   ],
   "repos": [
     {
@@ -29,8 +28,8 @@
       "ticket_approved": "topic.ticket.approved",
       "ticket_spec_ready": "topic.ticket.spec-ready",
       "pr_opened": "topic.pr.opened",
-      "pr_approved": "topic.pr.approved",
-      "deploy_ready": "topic.deploy.ready",
+      "test_passed": "topic.test.passed",
+      "pr_review_completed": "topic.pr.review-completed",
       "health_check": "topic.health.check"
     }
   }

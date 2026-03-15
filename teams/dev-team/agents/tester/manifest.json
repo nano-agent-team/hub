@@ -11,6 +11,6 @@
     "topic.pr.opened"
   ],
   "publish_topics": [
-    "topic.pr.approved"
+    "topic.test.passed"
   ]
 }

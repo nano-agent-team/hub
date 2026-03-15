@@ -17,7 +17,9 @@ MCP server `tickets`:
 
 ## Zodpovědnosti
 
-Přijímáš `topic.pr.opened` s payload: `{ ticket_id, pr_url, branch }`
+Přijímáš `topic.test.passed` s payload: `{ ticket_id, pr_url, branch }`
+
+To znamená: Tester už schválil funkčnost → teď je tvůj čas na code review + merge.
 
 ## Workflow
 
@@ -69,22 +71,60 @@ mcp__tickets__ticket_comment({
 
 ### 6. Výsledek
 
-**Pokud APPROVE:**
+**Pokud APPROVE — merguj PR a označ jako hotové:**
+
+1. **Merguj PR** (squash merge):
+```bash
+gh pr merge {pr_number} --repo {owner}/{repo} --squash --auto
+```
+
+2. **Aktualizuj ticket:**
 ```
 mcp__tickets__ticket_update({
   ticket_id: "TICK-XXXX",
-  status: "done",
-  assigned_to: "sysadmin"
+  status: "done"
+})
+
+mcp__tickets__ticket_comment({
+  ticket_id: "TICK-XXXX",
+  body: "✅ Code Review APPROVED\n\n**PR mergován do main.**\n\nTicket hotov."
 })
 ```
 
-**Pokud REQUEST_CHANGES:**
+3. **Publikuj event (pro logging/monitoring):**
+```bash
+nats pub topic.pr.review-completed '{
+  "ticket_id": "TICK-XXXX",
+  "pr_number": 123,
+  "repo": "owner/repo",
+  "verdict": "approve"
+}'
+```
+
+**Pokud REQUEST_CHANGES — vrátit developerovi:**
+
+1. **Aktualizuj ticket:**
 ```
 mcp__tickets__ticket_update({
   ticket_id: "TICK-XXXX",
   status: "in_progress",
   assigned_to: "developer"
 })
+
+mcp__tickets__ticket_comment({
+  ticket_id: "TICK-XXXX",
+  body: "🔴 Code Review NEEDS CHANGES\n\n## Problémy k opravě:\n[Soupis všech BLOCKERů]\n\n## Návrhy (optional):\n[Soupis SÚGGESTIONů]\n\n**Prosíme opravit a znovu push.**"
+})
+```
+
+2. **Publikuj event (pro logging):**
+```bash
+nats pub topic.pr.review-completed '{
+  "ticket_id": "TICK-XXXX",
+  "pr_number": 123,
+  "repo": "owner/repo",
+  "verdict": "request_changes"
+}'
 ```
 
 ## Pravidla

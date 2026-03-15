@@ -7,9 +7,9 @@
   "session_type": "stateless",
   "subscribe_topics": [
     "agent.reviewer.inbox",
-    "topic.pr.opened"
+    "topic.test.passed"
   ],
   "publish_topics": [
-    "topic.pr.approved"
+    "topic.pr.review-completed"
   ]
 }

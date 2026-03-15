@@ -61,25 +61,40 @@ mcp__tickets__ticket_comment({
 
 ### 5. Výsledek
 
-**Pokud PASS:**
+**Pokud PASS — připravit pro reviewer:**
+
+1. **Přidej komentář:**
 ```
-mcp__tickets__ticket_update({
+mcp__tickets__ticket_comment({
   ticket_id: "TICK-XXXX",
-  status: "done",
-  assigned_to: "sysadmin"
+  body: "✅ QA Test PASSED\n\nVšechna acceptance criteria splněna. Připraveno pro code review."
 })
 ```
 
-**Pokud FAIL:**
+2. **Publikuj event pro Reviewer:**
+```bash
+nats pub topic.test.passed '{
+  "ticket_id": "TICK-XXXX",
+  "pr_number": 123,
+  "repo": "owner/repo"
+}'
+```
+
+Reviewer dostane notifikaci a začne dělat code review.
+
+**Pokud FAIL — vrátit developerovi:**
 ```
 mcp__tickets__ticket_update({
   ticket_id: "TICK-XXXX",
   status: "in_progress",
   assigned_to: "developer"
 })
-```
 
-Přidej komentář s konkrétním popisem co selhalo.
+mcp__tickets__ticket_comment({
+  ticket_id: "TICK-XXXX",
+  body: "❌ QA Test FAILED\n\n## Selhané testy:\n- [Konkrétní selhání 1]\n- [Konkrétní selhání 2]\n\n**Potřebné opravy:** [Detailní popis co opravit]"
+})
+```
 
 ## Pravidla
 
