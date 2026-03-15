@@ -1,0 +1,136 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-json:
+    name: Validate JSON
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON syntax
+        run: |
+          error=0
+          while IFS= read -r -d '' file; do
+            if ! node -e "require('./$file')" 2>/dev/null; then
+              echo "❌ Invalid JSON: $file"
+              node -e "JSON.parse(require('fs').readFileSync('$file','utf8'))" 2>&1 | sed 's/^/   /'
+              error=1
+            else
+              echo "✅ $file"
+            fi
+          done < <(find teams agents -name "*.json" -print0 2>/dev/null)
+          exit $error
+
+      - name: Validate manifests required fields
+        run: |
+          node - <<'EOF'
+          const fs = require('fs');
+          const path = require('path');
+
+          const TEAM_REQUIRED = ['id', 'name', 'version', 'description', 'agents'];
+          const MANIFEST_REQUIRED = ['id', 'name', 'version', 'description'];
+
+          let errors = 0;
+
+          function check(file, required) {
+            const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+            for (const field of required) {
+              if (data[field] === undefined || data[field] === null || data[field] === '') {
+                console.error(`❌ ${file}: missing required field "${field}"`);
+                errors++;
+              }
+            }
+          }
+
+          function isDir(p) { try { return fs.statSync(p).isDirectory(); } catch { return false; } }
+
+          // Validate team.json + team agents
+          if (fs.existsSync('teams')) {
+            for (const team of fs.readdirSync('teams').filter(t => isDir(path.join('teams', t)))) {
+              const teamJson = path.join('teams', team, 'team.json');
+              if (fs.existsSync(teamJson)) check(teamJson, TEAM_REQUIRED);
+
+              const agentsDir = path.join('teams', team, 'agents');
+              if (fs.existsSync(agentsDir)) {
+                for (const agent of fs.readdirSync(agentsDir).filter(a => isDir(path.join(agentsDir, a)))) {
+                  const manifestJson = path.join(agentsDir, agent, 'manifest.json');
+                  if (fs.existsSync(manifestJson)) check(manifestJson, MANIFEST_REQUIRED);
+                }
+              }
+            }
+          }
+
+          // Validate top-level general agents
+          if (fs.existsSync('agents')) {
+            for (const agent of fs.readdirSync('agents').filter(a => isDir(path.join('agents', a)))) {
+              const manifestJson = path.join('agents', agent, 'manifest.json');
+              if (fs.existsSync(manifestJson)) check(manifestJson, MANIFEST_REQUIRED);
+            }
+          }
+
+          if (errors > 0) {
+            console.error(`\n${errors} validation error(s) found.`);
+            process.exit(1);
+          } else {
+            console.log('All manifests valid.');
+          }
+          EOF
+
+      - name: Check required files per team and agent
+        run: |
+          node - <<'EOF'
+          const fs = require('fs');
+          const path = require('path');
+
+          let errors = 0;
+
+          function isDir(p) { try { return fs.statSync(p).isDirectory(); } catch { return false; } }
+
+          function checkAgent(agentDir, label) {
+            for (const required of ['manifest.json', 'CLAUDE.md']) {
+              if (!fs.existsSync(path.join(agentDir, required))) {
+                console.error(`❌ ${label}: missing ${required}`);
+                errors++;
+              }
+            }
+          }
+
+          // Check teams structure
+          if (fs.existsSync('teams')) {
+            for (const team of fs.readdirSync('teams').filter(t => isDir(path.join('teams', t)))) {
+              const teamDir = path.join('teams', team);
+              for (const required of ['team.json', 'setup.json']) {
+                if (!fs.existsSync(path.join(teamDir, required))) {
+                  console.error(`❌ teams/${team}: missing ${required}`);
+                  errors++;
+                }
+              }
+              const agentsDir = path.join(teamDir, 'agents');
+              if (fs.existsSync(agentsDir)) {
+                for (const agent of fs.readdirSync(agentsDir).filter(a => isDir(path.join(agentsDir, a)))) {
+                  checkAgent(path.join(agentsDir, agent), `teams/${team}/agents/${agent}`);
+                }
+              }
+            }
+          }
+
+          // Check top-level general agents
+          if (fs.existsSync('agents')) {
+            for (const agent of fs.readdirSync('agents').filter(a => isDir(path.join('agents', a)))) {
+              checkAgent(path.join('agents', agent), `agents/${agent}`);
+            }
+          }
+
+          if (errors > 0) {
+            console.error(`\n${errors} structure error(s) found.`);
+            process.exit(1);
+          } else {
+            console.log('All structures valid.');
+          }
+          EOF

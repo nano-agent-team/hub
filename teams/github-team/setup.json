@@ -1,0 +1,17 @@
+{
+  "requires": [
+    {
+      "key": "github_token",
+      "label": "GitHub Token",
+      "type": "secret",
+      "help": "Personal access token with repo and webhook permissions."
+    },
+    {
+      "key": "repo_url",
+      "label": "GitHub repo URL",
+      "type": "text",
+      "shared": true,
+      "placeholder": "https://github.com/org/repo"
+    }
+  ]
+}

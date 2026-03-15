@@ -11,16 +11,7 @@
     "reviewer",
     "scrum-master"
   ],
-  "repos": [
-    {
-      "id": "web-ui",
-      "name": "nano-agent-team Web UI",
-      "url": "git@github.com:nano-agent-team/web-ui.git",
-      "default": true,
-      "stack": "Vue 3 + Vite + TypeScript",
-      "main_branch": "main"
-    }
-  ],
+  "repos": [],
   "api_url": "http://localhost:3001",
   "pipeline": {
     "topics": {
