@@ -65,6 +65,22 @@ export class GitHubClient {
     return res.json() as Promise<T>;
   }
 
+  async put<T>(path: string, body: unknown): Promise<T> {
+    const token = await this.getInstallationToken();
+    const res = await fetch(`https://api.github.com${path}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(`GitHub API PUT ${path} failed: ${res.status} ${await res.text()}`);
+    return res.json() as Promise<T>;
+  }
+
   async post<T>(path: string, body: unknown): Promise<T> {
     const token = await this.getInstallationToken();
     const res = await fetch(`https://api.github.com${path}`, {

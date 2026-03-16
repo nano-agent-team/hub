@@ -42,6 +42,14 @@ export interface GitHubCommit {
   commit: { committer: { date: string } };
 }
 
+export interface GitHubReview {
+  id: number;
+  user: { login: string; type: string };
+  body: string;
+  state: 'APPROVED' | 'CHANGES_REQUESTED' | 'COMMENTED' | 'DISMISSED' | 'PENDING';
+  submitted_at: string;
+}
+
 export function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'synchronized', ghToken?: string): NatsEvent {
   const topic = eventType === 'opened' ? 'topic.github.pr.opened' : 'topic.github.pr.synchronized';
   return {
@@ -70,6 +78,32 @@ export function issueToNats(repo: string, issue: GitHubIssue, ghToken?: string):
       body: issue.body,
       author: issue.user.login,
       url: issue.html_url,
+      ...(ghToken ? { gh_token: ghToken } : {}),
+    },
+  };
+}
+
+export function prDiscussionToNats(
+  repo: string,
+  pr: GitHubPR,
+  comment: GitHubComment,
+  ghToken?: string,
+): NatsEvent {
+  return {
+    topic: 'topic.github.pr.discussion',
+    payload: {
+      repo,
+      pr_number: pr.number,
+      title: pr.title,
+      author: pr.user.login,
+      base_branch: pr.base.ref,
+      head_branch: pr.head.ref,
+      sha: pr.head.sha,
+      url: pr.html_url,
+      comment_id: comment.id,
+      comment_author: comment.user.login,
+      comment_body: comment.body,
+      comment_url: comment.html_url,
       ...(ghToken ? { gh_token: ghToken } : {}),
     },
   };

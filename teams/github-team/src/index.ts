@@ -12,6 +12,7 @@
  * Publishes NATS topics:
  *   topic.github.pr.opened
  *   topic.github.pr.synchronized
+ *   topic.github.pr.discussion
  *   topic.github.issue.opened
  *   topic.github.issue.comment
  */
@@ -84,7 +85,7 @@ function startPoller(config: AppConfig, state: StateManager, publish: Publisher)
   });
 
   const intervalMs = (config.pollingIntervalSec ?? 120) * 1000;
-  activePoller = new Poller(client, state, config.repos!, publish, intervalMs);
+  activePoller = new Poller(client, state, config.repos!, publish, intervalMs, config.appSlug);
   activePoller.start();
 }
 
