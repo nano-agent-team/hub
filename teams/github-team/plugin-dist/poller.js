@@ -44,41 +44,43 @@ export class Poller {
         }
     }
     async pollRepo(repo) {
-        const cursor = this.state.getRepoCursor(repo);
         const [owner, repoName] = repo.split('/');
         // Fetch a fresh installation token once per poll cycle so agents can use gh CLI
         const ghToken = await this.client.getInstallationToken();
         // ── Pull Requests ────────────────────────────────────────────────────────
+        // Stateless approach: for each open PR, check GitHub itself to determine
+        // whether a review is needed — no local SHA state required.
         const prs = await this.client.get(`/repos/${owner}/${repoName}/pulls?state=open&sort=updated&direction=desc&per_page=50`);
-        let latestPrUpdate = cursor.prs_since;
         for (const pr of prs) {
-            if (pr.updated_at <= cursor.prs_since)
+            // Get latest commit on the PR
+            const commits = await this.client.get(`/repos/${owner}/${repoName}/pulls/${pr.number}/commits?per_page=100`);
+            if (!commits.length)
                 continue;
-            if (pr.updated_at > latestPrUpdate)
-                latestPrUpdate = pr.updated_at;
-            const isNew = pr.created_at > cursor.prs_since;
-            if (isNew) {
-                // New PR — fire opened, record head SHA
+            const latestCommit = commits[commits.length - 1];
+            const latestCommitDate = new Date(latestCommit.commit.committer.date);
+            // Get all comments on the PR and find the last bot comment
+            const comments = await this.client.get(`/repos/${owner}/${repoName}/issues/${pr.number}/comments?per_page=100`);
+            const botComments = comments.filter((c) => c.user.type === 'Bot');
+            const lastBotComment = botComments[botComments.length - 1];
+            const lastBotCommentDate = lastBotComment ? new Date(lastBotComment.created_at) : null;
+            if (!lastBotCommentDate) {
+                // No bot comment yet — treat as new PR
                 const event = prToNats(repo, pr, 'opened', ghToken);
                 await this.publish(event.topic, JSON.stringify(event.payload));
-                console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo}`);
-                this.state.setPrHead(repo, pr.number, pr.head.sha);
+                console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (no prior review)`);
+            }
+            else if (latestCommitDate > lastBotCommentDate) {
+                // New commits pushed after last review
+                const event = prToNats(repo, pr, 'synchronized', ghToken);
+                await this.publish(event.topic, JSON.stringify(event.payload));
+                console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (new commits since ${lastBotCommentDate.toISOString()})`);
             }
             else {
-                // Existing PR updated — only fire synchronized if HEAD SHA changed (real code push)
-                const lastSha = this.state.getPrHead(repo, pr.number);
-                if (pr.head.sha !== lastSha) {
-                    const event = prToNats(repo, pr, 'synchronized', ghToken);
-                    await this.publish(event.topic, JSON.stringify(event.payload));
-                    console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (${lastSha?.slice(0, 7)} → ${pr.head.sha.slice(0, 7)})`);
-                    this.state.setPrHead(repo, pr.number, pr.head.sha);
-                }
-                else {
-                    console.log(`[github-team poller] PR#${pr.number} updated but SHA unchanged — skip`);
-                }
+                console.log(`[github-team poller] PR#${pr.number} already reviewed at latest commit — skip`);
             }
         }
         // ── Issues ───────────────────────────────────────────────────────────────
+        const cursor = this.state.getRepoCursor(repo);
         const issues = await this.client.get(`/repos/${owner}/${repoName}/issues?state=open&sort=updated&direction=desc&since=${cursor.issues_since}&per_page=50`);
         let latestIssueUpdate = cursor.issues_since;
         for (const issue of issues) {
@@ -104,7 +106,6 @@ export class Poller {
             }
         }
         this.state.updateRepoCursor(repo, {
-            prs_since: latestPrUpdate,
             issues_since: latestIssueUpdate,
         });
     }

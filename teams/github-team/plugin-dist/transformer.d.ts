@@ -39,10 +39,19 @@ export interface GitHubComment {
     body: string;
     user: {
         login: string;
+        type: string;
     };
     html_url: string;
     created_at: string;
     updated_at: string;
+}
+export interface GitHubCommit {
+    sha: string;
+    commit: {
+        committer: {
+            date: string;
+        };
+    };
 }
 export declare function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'synchronized', ghToken?: string): NatsEvent;
 export declare function issueToNats(repo: string, issue: GitHubIssue, ghToken?: string): NatsEvent;

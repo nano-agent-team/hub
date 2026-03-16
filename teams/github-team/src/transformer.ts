@@ -31,10 +31,15 @@ export interface GitHubIssue {
 export interface GitHubComment {
   id: number;
   body: string;
-  user: { login: string };
+  user: { login: string; type: string };
   html_url: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface GitHubCommit {
+  sha: string;
+  commit: { committer: { date: string } };
 }
 
 export function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'synchronized', ghToken?: string): NatsEvent {
