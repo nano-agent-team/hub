@@ -12,8 +12,12 @@
  * Publishes NATS topics:
  *   topic.github.pr.opened
  *   topic.github.pr.synchronized
+ *   topic.github.pr.discussion
  *   topic.github.issue.opened
  *   topic.github.issue.comment
+ *
+ * Subscribes to:
+ *   github.pr.reply.{owner}.{repo}.{prNumber} — agent review replies → posts as GitHub comment
  */
 import type { Application } from 'express';
 type Publisher = (subject: string, payload: string) => Promise<void>;

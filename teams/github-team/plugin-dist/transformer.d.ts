@@ -53,6 +53,17 @@ export interface GitHubCommit {
         };
     };
 }
+export interface GitHubReview {
+    id: number;
+    user: {
+        login: string;
+        type: string;
+    };
+    body: string;
+    state: 'APPROVED' | 'CHANGES_REQUESTED' | 'COMMENTED' | 'DISMISSED' | 'PENDING';
+    submitted_at: string;
+}
 export declare function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'synchronized', ghToken?: string): NatsEvent;
 export declare function issueToNats(repo: string, issue: GitHubIssue, ghToken?: string): NatsEvent;
+export declare function prDiscussionToNats(repo: string, pr: GitHubPR, comment: GitHubComment, ghToken?: string): NatsEvent;
 export declare function commentToNats(repo: string, issueNumber: number, comment: GitHubComment, ghToken?: string): NatsEvent;

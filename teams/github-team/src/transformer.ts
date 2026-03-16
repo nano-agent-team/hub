@@ -52,6 +52,7 @@ export interface GitHubReview {
 
 export function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'synchronized', ghToken?: string): NatsEvent {
   const topic = eventType === 'opened' ? 'topic.github.pr.opened' : 'topic.github.pr.synchronized';
+  const [owner, repoName] = repo.split('/');
   return {
     topic,
     payload: {
@@ -63,6 +64,7 @@ export function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'sync
       head_branch: pr.head.ref,
       sha: pr.head.sha,
       url: pr.html_url,
+      replySubject: `github.pr.reply.${owner}.${repoName}.${pr.number}`,
       ...(ghToken ? { gh_token: ghToken } : {}),
     },
   };
