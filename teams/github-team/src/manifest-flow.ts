@@ -95,15 +95,18 @@ function toggleOrg(el) {
     app.post('/api/github-team/setup/manifest', (req: Request, res: Response) => {
       const target = (req.body?.target as string) === 'org' ? 'org' : 'personal';
       const org = (req.body?.org as string | undefined)?.trim() ?? '';
-      const callbackUrl = new URL('http://localhost:3001/api/github-team/setup/callback');
+      const proto = req.headers['x-forwarded-proto'] ?? req.protocol ?? 'http';
+      const host = req.headers['x-forwarded-host'] ?? req.headers.host ?? 'localhost:3001';
+      const baseUrl = `${proto}://${host}`;
+      const callbackUrl = new URL(`${baseUrl}/api/github-team/setup/callback`);
       callbackUrl.searchParams.set('target', target);
       if (target === 'org' && org) callbackUrl.searchParams.set('org', org);
 
       const manifest = {
         name: 'NATE GitHub Team',
-        url: 'http://localhost:3001',
+        url: baseUrl,
         redirect_url: callbackUrl.toString(),
-        setup_url: 'http://localhost:3001/api/github-team/setup/installed',
+        setup_url: `${baseUrl}/api/github-team/setup/installed`,
         setup_on_update: false,
         public: false,
         hook_attributes: { url: 'https://example.com/nate-placeholder', active: false },
