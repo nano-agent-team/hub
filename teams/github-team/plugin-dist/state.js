@@ -32,5 +32,14 @@ export class StateManager {
         this.state.repos[repo] = { ...this.getRepoCursor(repo), ...updates };
         this.save();
     }
+    getPrHead(repo, prNumber) {
+        return this.getRepoCursor(repo).pr_heads?.[String(prNumber)];
+    }
+    setPrHead(repo, prNumber, sha) {
+        const cursor = this.getRepoCursor(repo);
+        cursor.pr_heads = { ...cursor.pr_heads, [String(prNumber)]: sha };
+        this.state.repos[repo] = cursor;
+        this.save();
+    }
 }
 //# sourceMappingURL=state.js.map

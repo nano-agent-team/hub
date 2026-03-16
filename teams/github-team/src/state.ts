@@ -4,6 +4,8 @@ import path from 'path';
 export interface RepoState {
   prs_since: string;
   issues_since: string;
+  /** Last seen commit SHA per PR — key is PR number as string */
+  pr_heads?: Record<string, string>;
 }
 
 export interface PollerState {
@@ -44,6 +46,17 @@ export class StateManager {
 
   updateRepoCursor(repo: string, updates: Partial<RepoState>): void {
     this.state.repos[repo] = { ...this.getRepoCursor(repo), ...updates };
+    this.save();
+  }
+
+  getPrHead(repo: string, prNumber: number): string | undefined {
+    return this.getRepoCursor(repo).pr_heads?.[String(prNumber)];
+  }
+
+  setPrHead(repo: string, prNumber: number, sha: string): void {
+    const cursor = this.getRepoCursor(repo);
+    cursor.pr_heads = { ...cursor.pr_heads, [String(prNumber)]: sha };
+    this.state.repos[repo] = cursor;
     this.save();
   }
 }

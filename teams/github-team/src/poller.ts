@@ -65,10 +65,25 @@ export class Poller {
       if (pr.updated_at <= cursor.prs_since) continue;
       if (pr.updated_at > latestPrUpdate) latestPrUpdate = pr.updated_at;
 
-      const eventType = pr.created_at > cursor.prs_since ? 'opened' : 'synchronized';
-      const event = prToNats(repo, pr, eventType, ghToken);
-      await this.publish(event.topic, JSON.stringify(event.payload));
-      console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo}`);
+      const isNew = pr.created_at > cursor.prs_since;
+      if (isNew) {
+        // New PR — fire opened, record head SHA
+        const event = prToNats(repo, pr, 'opened', ghToken);
+        await this.publish(event.topic, JSON.stringify(event.payload));
+        console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo}`);
+        this.state.setPrHead(repo, pr.number, pr.head.sha);
+      } else {
+        // Existing PR updated — only fire synchronized if HEAD SHA changed (real code push)
+        const lastSha = this.state.getPrHead(repo, pr.number);
+        if (pr.head.sha !== lastSha) {
+          const event = prToNats(repo, pr, 'synchronized', ghToken);
+          await this.publish(event.topic, JSON.stringify(event.payload));
+          console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (${lastSha?.slice(0, 7)} → ${pr.head.sha.slice(0, 7)})`);
+          this.state.setPrHead(repo, pr.number, pr.head.sha);
+        } else {
+          console.log(`[github-team poller] PR#${pr.number} updated but SHA unchanged — skip`);
+        }
+      }
     }
 
     // ── Issues ───────────────────────────────────────────────────────────────
