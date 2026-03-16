@@ -16,7 +16,7 @@ export class ManifestFlow {
   private configPath: string;
 
   constructor(private dataDir: string) {
-    this.configPath = path.join(dataDir, 'teams', 'github-team', 'app-config.json');
+    this.configPath = path.join(dataDir, 'teams', 'github-team', 'config', 'app-config.json');
   }
 
   loadConfig(): AppConfig | null {
