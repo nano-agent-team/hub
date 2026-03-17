@@ -63,6 +63,9 @@ export class Poller {
     );
 
     for (const pr of prs) {
+      // Skip merged or closed PRs (defensive — API should only return open, but guard against stale data)
+      if (pr.state !== 'open' || pr.merged_at !== null) continue;
+
       // Get latest commit on the PR
       const commits = await this.client.get<GitHubCommit[]>(
         `/repos/${owner}/${repoName}/pulls/${pr.number}/commits?per_page=100`,
