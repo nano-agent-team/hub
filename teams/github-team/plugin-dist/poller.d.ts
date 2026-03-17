@@ -7,9 +7,10 @@ export declare class Poller {
     private repos;
     private publish;
     private intervalMs;
+    private appSlug;
     private timer;
     private running;
-    constructor(client: GitHubClient, state: StateManager, repos: string[], publish: Publisher, intervalMs: number);
+    constructor(client: GitHubClient, state: StateManager, repos: string[], publish: Publisher, intervalMs: number, appSlug: string);
     start(): void;
     stop(): void;
     private poll;

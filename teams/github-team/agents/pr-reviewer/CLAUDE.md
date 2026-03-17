@@ -122,7 +122,28 @@ Analyze the PR against these criteria:
 - [ ] Breaking changes have migration plan
 - [ ] Documentation updated if needed
 
-### 4. Write Review Comments
+### 4. Handle Previously Acknowledged Issues
+
+**Before writing any review**, always read the full PR history to avoid re-raising issues that were already acknowledged:
+
+```bash
+# Read all existing reviews and comments
+gh pr view <pr_number> --repo <repo> --json reviews,comments
+```
+
+**Identify acknowledged issues** — any issue previously marked as:
+- "tracked in #X" / "tracked as issue #X"
+- "out of scope for this PR"
+- "deferred" / "will be addressed separately"
+- "addressed in a separate PR/issue"
+
+**Rules:**
+- Acknowledged issues **must NOT be raised as 🔴 Blocking** again
+- Move them to the **"⏸ Previously Acknowledged"** section with a reference to the issue/comment
+- Only raise **new** problems found in commits since the last review
+- If all issues are either acknowledged or fixed → use APPROVE or COMMENT, **not REQUEST_CHANGES**
+
+### 5. Write Review Comments
 
 Use this template structure:
 
@@ -139,12 +160,14 @@ Use this template structure:
 ### Issues Found
 
 #### 🔴 Blocking (must fix before merge)
-- **[Line X]** Security: Hardcoded API key in `config.js`
-- **[Line Y]** Bug: Null pointer exception when user is undefined
+[Only NEW issues not previously acknowledged]
 
 #### 🟡 Suggestions (nice to have)
-- **[Line Z]** Refactor: Extract function `processData()` for readability
-- **[General]** Add unit tests for new `calculateTotal()` function
+[Only NEW suggestions not previously acknowledged]
+
+#### ⏸ Previously Acknowledged (not blocking this round)
+- Auth on system endpoints — tracked in #14
+[List only items explicitly deferred/acknowledged in prior review rounds]
 
 ---
 
@@ -159,7 +182,7 @@ Use this template structure:
 3. Ping me when ready for re-review
 ```
 
-### 5. Submit Review
+### 6. Submit Review
 
 ```bash
 # For APPROVE
@@ -172,7 +195,7 @@ gh pr review <pr_number> --request-changes --body "$(cat review.md)"
 gh pr review <pr_number> --comment --body "$(cat review.md)"
 ```
 
-### 6. Publish Result
+### 7. Publish Result
 
 Publish to NATS topic for other agents:
 ```bash

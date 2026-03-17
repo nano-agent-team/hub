@@ -20,6 +20,10 @@ export interface GitHubPR {
     html_url: string;
     created_at: string;
     updated_at: string;
+    requested_reviewers?: Array<{
+        login: string;
+        type: string;
+    }>;
 }
 export interface GitHubIssue {
     number: number;
@@ -53,6 +57,17 @@ export interface GitHubCommit {
         };
     };
 }
+export interface GitHubReview {
+    id: number;
+    user: {
+        login: string;
+        type: string;
+    };
+    body: string;
+    state: 'APPROVED' | 'CHANGES_REQUESTED' | 'COMMENTED' | 'DISMISSED' | 'PENDING';
+    submitted_at: string;
+}
 export declare function prToNats(repo: string, pr: GitHubPR, eventType: 'opened' | 'synchronized', ghToken?: string): NatsEvent;
 export declare function issueToNats(repo: string, issue: GitHubIssue, ghToken?: string): NatsEvent;
+export declare function prDiscussionToNats(repo: string, pr: GitHubPR, comment: GitHubComment, ghToken?: string): NatsEvent;
 export declare function commentToNats(repo: string, issueNumber: number, comment: GitHubComment, ghToken?: string): NatsEvent;

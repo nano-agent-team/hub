@@ -1,18 +1,20 @@
-import { prToNats, issueToNats, commentToNats } from './transformer.js';
+import { prToNats, prDiscussionToNats, issueToNats, commentToNats } from './transformer.js';
 export class Poller {
     client;
     state;
     repos;
     publish;
     intervalMs;
+    appSlug;
     timer = null;
     running = false;
-    constructor(client, state, repos, publish, intervalMs) {
+    constructor(client, state, repos, publish, intervalMs, appSlug) {
         this.client = client;
         this.state = state;
         this.repos = repos;
         this.publish = publish;
         this.intervalMs = intervalMs;
+        this.appSlug = appSlug;
     }
     start() {
         console.log(`[github-team poller] Starting — interval=${this.intervalMs}ms repos=${this.repos.join(', ')}`);
@@ -63,20 +65,51 @@ export class Poller {
             const botComments = comments.filter((c) => c.user.type === 'Bot');
             const lastBotComment = botComments[botComments.length - 1];
             const lastBotCommentDate = lastBotComment ? new Date(lastBotComment.created_at) : null;
-            if (!lastBotCommentDate) {
-                // No bot comment yet — treat as new PR
+            // Get PR reviews (gh pr review --approve creates a review, not a comment)
+            const reviews = await this.client.get(`/repos/${owner}/${repoName}/pulls/${pr.number}/reviews?per_page=100`);
+            const botReviews = reviews.filter((r) => r.user.type === 'Bot' && r.submitted_at);
+            const lastBotReview = botReviews[botReviews.length - 1];
+            const lastBotReviewDate = lastBotReview ? new Date(lastBotReview.submitted_at) : null;
+            // Use the latest of comment date and review date
+            const lastBotActivityDate = lastBotCommentDate && lastBotReviewDate
+                ? new Date(Math.max(lastBotCommentDate.getTime(), lastBotReviewDate.getTime()))
+                : lastBotCommentDate ?? lastBotReviewDate;
+            if (!lastBotActivityDate) {
+                // No bot activity yet — treat as new PR
                 const event = prToNats(repo, pr, 'opened', ghToken);
                 await this.publish(event.topic, JSON.stringify(event.payload));
                 console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (no prior review)`);
             }
-            else if (latestCommitDate > lastBotCommentDate) {
+            else if (latestCommitDate > lastBotActivityDate) {
                 // New commits pushed after last review
                 const event = prToNats(repo, pr, 'synchronized', ghToken);
                 await this.publish(event.topic, JSON.stringify(event.payload));
-                console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (new commits since ${lastBotCommentDate.toISOString()})`);
+                console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (new commits since ${lastBotActivityDate.toISOString()})`);
             }
             else {
-                console.log(`[github-team poller] PR#${pr.number} already reviewed at latest commit — skip`);
+                // No new commits — check if bot was explicitly requested to review
+                const botRequested = pr.requested_reviewers?.some((r) => r.login === this.appSlug);
+                if (botRequested) {
+                    const event = prToNats(repo, pr, 'opened', ghToken);
+                    await this.publish(event.topic, JSON.stringify(event.payload));
+                    console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (review requested)`);
+                }
+                else {
+                    // Check if author tagged the bot in a new comment
+                    const mentionPattern = `@${this.appSlug}`;
+                    const newMentions = comments.filter((c) => c.user.type !== 'Bot' &&
+                        new Date(c.created_at) > lastBotActivityDate &&
+                        c.body.includes(mentionPattern));
+                    if (newMentions.length > 0) {
+                        const latest = newMentions[newMentions.length - 1];
+                        const event = prDiscussionToNats(repo, pr, latest, ghToken);
+                        await this.publish(event.topic, JSON.stringify(event.payload));
+                        console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (mention by @${latest.user.login})`);
+                    }
+                    else {
+                        console.log(`[github-team poller] PR#${pr.number} already reviewed at latest commit — skip`);
+                    }
+                }
             }
         }
         // ── Issues ───────────────────────────────────────────────────────────────

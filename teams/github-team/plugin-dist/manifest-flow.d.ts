@@ -14,5 +14,6 @@ export declare class ManifestFlow {
     private getInstanceId;
     loadConfig(): AppConfig | null;
     saveConfig(config: AppConfig): void;
+    private setupBranchProtection;
     registerRoutes(app: Application, onReady: (config: AppConfig) => void): void;
 }

@@ -34,6 +34,32 @@ export class ManifestFlow {
         fs.mkdirSync(path.dirname(this.configPath), { recursive: true });
         fs.writeFileSync(this.configPath, JSON.stringify(config, null, 2), { mode: 0o600 });
     }
+    async setupBranchProtection(client, repos) {
+        for (const repo of repos) {
+            const [owner, repoName] = repo.split('/');
+            try {
+                // Get default branch
+                const repoInfo = await client.get(`/repos/${owner}/${repoName}`);
+                const branch = repoInfo.default_branch;
+                await client.put(`/repos/${owner}/${repoName}/branches/${branch}/protection`, {
+                    required_status_checks: null,
+                    enforce_admins: false,
+                    required_pull_request_reviews: {
+                        dismiss_stale_reviews: true,
+                        require_code_owner_reviews: false,
+                        required_approving_review_count: 1,
+                    },
+                    restrictions: null,
+                    allow_force_pushes: false,
+                    allow_deletions: false,
+                });
+                console.log(`[github-team] Branch protection set on ${repo}:${branch} (require 1 approval)`);
+            }
+            catch (err) {
+                console.warn(`[github-team] Could not set branch protection for ${repo}:`, err);
+            }
+        }
+    }
     registerRoutes(app, onReady) {
         // Step 1b: Receive form, build manifest and auto-submit to GitHub
         app.post('/api/github-team/setup/manifest', (req, res) => {
@@ -59,6 +85,7 @@ export class ManifestFlow {
                     issues: 'write',
                     contents: 'read',
                     metadata: 'read',
+                    administration: 'write',
                 },
                 default_events: ['pull_request', 'issues', 'issue_comment'],
             };
@@ -153,6 +180,7 @@ export class ManifestFlow {
                 this.saveConfig(updated);
                 console.log(`[github-team] Installation ${installationId} connected. Repos: ${repos.join(', ')}`);
                 onReady(updated);
+                void this.setupBranchProtection(client, repos);
                 res.send(`<!DOCTYPE html>
 <html>
 <head><title>NATE GitHub Team Connected</title></head>

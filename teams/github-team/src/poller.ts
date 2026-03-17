@@ -104,21 +104,31 @@ export class Poller {
         await this.publish(event.topic, JSON.stringify(event.payload));
         console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (new commits since ${lastBotActivityDate.toISOString()})`);
       } else {
-        // No new commits — check if author tagged the bot in a new comment
-        const mentionPattern = `@${this.appSlug}`;
-        const newMentions = comments.filter(
-          (c) =>
-            c.user.type !== 'Bot' &&
-            new Date(c.created_at) > lastBotActivityDate &&
-            c.body.includes(mentionPattern),
+        // No new commits — check if bot was explicitly requested to review
+        const botRequested = pr.requested_reviewers?.some(
+          (r) => r.login === this.appSlug,
         );
-        if (newMentions.length > 0) {
-          const latest = newMentions[newMentions.length - 1];
-          const event = prDiscussionToNats(repo, pr, latest, ghToken);
+        if (botRequested) {
+          const event = prToNats(repo, pr, 'opened', ghToken);
           await this.publish(event.topic, JSON.stringify(event.payload));
-          console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (mention by @${latest.user.login})`);
+          console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (review requested)`);
         } else {
-          console.log(`[github-team poller] PR#${pr.number} already reviewed at latest commit — skip`);
+          // Check if author tagged the bot in a new comment
+          const mentionPattern = `@${this.appSlug}`;
+          const newMentions = comments.filter(
+            (c) =>
+              c.user.type !== 'Bot' &&
+              new Date(c.created_at) > lastBotActivityDate &&
+              c.body.includes(mentionPattern),
+          );
+          if (newMentions.length > 0) {
+            const latest = newMentions[newMentions.length - 1];
+            const event = prDiscussionToNats(repo, pr, latest, ghToken);
+            await this.publish(event.topic, JSON.stringify(event.payload));
+            console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (mention by @${latest.user.login})`);
+          } else {
+            console.log(`[github-team poller] PR#${pr.number} already reviewed at latest commit — skip`);
+          }
         }
       }
     }
