@@ -2,7 +2,7 @@
   "id": "scrum-master",
   "name": "Scrum Master",
   "version": "0.1.0",
-  "description": "Monitoruje stale tickety, reportuje bloky, triggeruje health check",
+  "description": "Monitors stale tickets, reports blockers, triggers health checks",
   "model": "claude-haiku-4-5-20251001",
   "session_type": "stateless",
   "subscribe_topics": [

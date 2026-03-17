@@ -2,7 +2,7 @@
   "id": "pm",
   "name": "Product Manager",
   "version": "0.1.0",
-  "description": "Hodnotí nové tickety, schvaluje/zamítá, přiřazuje priority a kapacitu",
+  "description": "Evaluates new tickets, approves/rejects, assigns priority and capacity",
   "model": "claude-sonnet-4-5",
   "session_type": "stateless",
   "subscribe_topics": [

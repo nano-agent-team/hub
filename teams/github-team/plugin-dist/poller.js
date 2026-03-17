@@ -54,6 +54,9 @@ export class Poller {
         // whether a review is needed — no local SHA state required.
         const prs = await this.client.get(`/repos/${owner}/${repoName}/pulls?state=open&sort=updated&direction=desc&per_page=50`);
         for (const pr of prs) {
+            // Skip merged or closed PRs (defensive — API should only return open, but guard against stale data)
+            if (pr.state !== 'open' || pr.merged_at !== null)
+                continue;
             // Get latest commit on the PR
             const commits = await this.client.get(`/repos/${owner}/${repoName}/pulls/${pr.number}/commits?per_page=100`);
             if (!commits.length)

@@ -1,7 +1,7 @@
 {
   "id": "dev-team",
   "name": "Dev Team",
-  "description": "Softwarový vývojový tým — PM, Architect, Developer, Tester, Reviewer, Scrum Master",
+  "description": "Software development team — PM, Architect, Developer, Tester, Reviewer, Scrum Master, Product Owner",
   "version": "0.1.0",
   "status": "stable",
   "agents": [
@@ -10,7 +10,8 @@
     "developer",
     "tester",
     "reviewer",
-    "scrum-master"
+    "scrum-master",
+    "product-owner"
   ],
   "repos": [],
   "api_url": "http://localhost:3001",
@@ -22,7 +23,9 @@
       "pr_opened": "topic.pr.opened",
       "test_passed": "topic.test.passed",
       "pr_review_completed": "topic.pr.review-completed",
-      "health_check": "topic.health.check"
+      "health_check": "topic.health.check",
+      "issue_report": "topic.issue.report",
+      "issue_triaged": "topic.issue.triaged"
     }
   }
 }

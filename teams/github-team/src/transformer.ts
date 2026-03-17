@@ -8,6 +8,7 @@ export interface GitHubPR {
   title: string;
   body: string;
   state: string;
+  merged_at: string | null;
   user: { login: string };
   head: { ref: string; sha: string };
   base: { ref: string };
