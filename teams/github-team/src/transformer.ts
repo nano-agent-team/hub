@@ -14,6 +14,7 @@ export interface GitHubPR {
   html_url: string;
   created_at: string;
   updated_at: string;
+  requested_reviewers?: Array<{ login: string; type: string }>;
 }
 
 export interface GitHubIssue {
