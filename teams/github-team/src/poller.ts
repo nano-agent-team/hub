@@ -106,7 +106,7 @@ export class Poller {
       } else {
         // No new commits — check if bot was explicitly requested to review
         const botRequested = pr.requested_reviewers?.some(
-          (r) => r.login === this.appSlug || r.type === 'Bot',
+          (r) => r.login === this.appSlug,
         );
         if (botRequested) {
           const event = prToNats(repo, pr, 'opened', ghToken);

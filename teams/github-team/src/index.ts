@@ -102,12 +102,19 @@ const plugin = {
             if (reply.error || !reply.result.trim()) continue;
 
             // Parse: github.pr.reply.<owner>.<repo>.<prNumber>
-            const parts = msg.subject.split('.');
-            if (parts.length < 6) continue;
-            const prNumber = parseInt(parts[parts.length - 1], 10);
-            const repoName = parts[parts.length - 2];
-            const owner = parts[parts.length - 3];
+            // Use lastIndexOf to handle repo names with dots (e.g. my.api.service)
+            const prefix = 'github.pr.reply.';
+            if (!msg.subject.startsWith(prefix)) continue;
+            const remainder = msg.subject.slice(prefix.length); // "<owner>.<repo>.<prNumber>"
+            const lastDot = remainder.lastIndexOf('.');
+            if (lastDot === -1) continue;
+            const prNumber = parseInt(remainder.slice(lastDot + 1), 10);
             if (isNaN(prNumber)) continue;
+            const ownerRepo = remainder.slice(0, lastDot); // "<owner>.<repo>"
+            const ownerDot = ownerRepo.indexOf('.');
+            if (ownerDot === -1) continue;
+            const owner = ownerRepo.slice(0, ownerDot);
+            const repoName = ownerRepo.slice(ownerDot + 1);
 
             if (!activeClient) {
               console.warn('[github-team plugin] Received PR reply but no active client — skipping');
