@@ -1,7 +1,7 @@
 {
   "id": "dev-team",
   "name": "Dev Team",
-  "description": "Softwarový vývojový tým — PM, Architect, Developer, Tester, Reviewer, Scrum Master",
+  "description": "Software development team — PM, Architect, Developer, Tester, Reviewer, Scrum Master, Product Owner",
   "version": "0.1.0",
   "status": "stable",
   "agents": [
