@@ -2,7 +2,7 @@
   "id": "developer",
   "name": "Software Developer",
   "version": "0.1.0",
-  "description": "Implementuje featury dle tech spec, vytváří PR",
+  "description": "Implements features according to tech spec, creates PRs",
   "model": "claude-sonnet-4-5",
   "session_type": "stateless",
   "workspace": true,

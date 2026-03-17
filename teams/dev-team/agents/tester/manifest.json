@@ -2,7 +2,7 @@
   "id": "tester",
   "name": "QA Tester",
   "version": "0.1.0",
-  "description": "Builduje a testuje PR dle acceptance criteria ze spec",
+  "description": "Builds and tests PRs against acceptance criteria from spec",
   "model": "claude-sonnet-4-5",
   "session_type": "stateless",
   "workspace": true,
