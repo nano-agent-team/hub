@@ -1,7 +1,7 @@
 {
   "id": "github-team",
   "name": "GitHub Management Team",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "GitHub automation workflow: PR review, vision alignment, and discussion moderation",
   "agents": [
     "pr-reviewer",
@@ -12,8 +12,8 @@
   "bindings": {
     "pr-reviewer": {
       "inputs": {
-        "pr_opened": "topic.github.pr.opened",
-        "pr_synchronized": "topic.github.pr.synchronized"
+        "pr_opened":      { "from": "topic.github.pr.opened",       "to": "event" },
+        "pr_synchronized": { "from": "topic.github.pr.synchronized", "to": "event" }
       },
       "outputs": {
         "pr_review_completed": "topic.github.pr.review-completed"
@@ -21,8 +21,8 @@
     },
     "developer": {
       "inputs": {
-        "spec_ready": "topic.ticket.spec-ready",
-        "pr_review_completed": "topic.github.pr.review-completed"
+        "spec_ready":          { "from": "topic.ticket.spec-ready",          "to": "task" },
+        "pr_review_completed": { "from": "topic.github.pr.review-completed", "to": "task" }
       },
       "outputs": {
         "pr_opened": "topic.github.pr.opened"
@@ -30,9 +30,9 @@
     },
     "vision-keeper": {
       "inputs": {
-        "issue_opened": "topic.github.issue.opened",
-        "pr_opened": "topic.github.pr.opened",
-        "vision_check": "topic.github.vision.check"
+        "issue_opened": { "from": "topic.github.issue.opened",  "to": "event" },
+        "pr_opened":    { "from": "topic.github.pr.opened",     "to": "event" },
+        "vision_check": { "from": "topic.github.vision.check",  "to": "event" }
       },
       "outputs": {
         "vision_verdict": "topic.github.vision.verdict"
@@ -40,7 +40,7 @@
     },
     "discussion-facilitator": {
       "inputs": {
-        "issue_comment": "topic.github.issue.comment"
+        "issue_comment": { "from": "topic.github.issue.comment", "to": "event" }
       },
       "outputs": {
         "discussion_summary": "topic.github.discussion.summary"

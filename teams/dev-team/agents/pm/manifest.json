@@ -5,11 +5,11 @@
   "description": "Evaluates new tickets, approves/rejects, assigns priority and capacity",
   "model": "claude-sonnet-4-5",
   "session_type": "stateless",
-  "subscribe_topics": [
-    "agent.pm.inbox",
-    "topic.ticket.new"
-  ],
   "publish_topics": [
     "topic.ticket.approved"
+  ],
+  "entrypoints": [
+    "inbox",
+    "task"
   ]
 }

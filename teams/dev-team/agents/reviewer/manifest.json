@@ -2,14 +2,14 @@
   "id": "reviewer",
   "name": "Code Reviewer",
   "version": "0.1.0",
-  "description": "Code review PRs — code quality, AC check, best practices",
+  "description": "Code review PRs \u2014 code quality, AC check, best practices",
   "model": "claude-opus-4-5",
   "session_type": "stateless",
-  "subscribe_topics": [
-    "agent.reviewer.inbox",
-    "topic.test.passed"
-  ],
   "publish_topics": [
     "topic.pr.review-completed"
+  ],
+  "entrypoints": [
+    "inbox",
+    "task"
   ]
 }

@@ -5,11 +5,11 @@
   "description": "Writes technical spec into ticket body, designs solution architecture",
   "model": "claude-opus-4-5",
   "session_type": "stateless",
-  "subscribe_topics": [
-    "agent.architect.inbox",
-    "topic.ticket.approved"
-  ],
   "publish_topics": [
     "topic.ticket.spec-ready"
+  ],
+  "entrypoints": [
+    "inbox",
+    "task"
   ]
 }

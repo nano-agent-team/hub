@@ -7,10 +7,11 @@
   "session_type": "stateless",
   "workspace": false,
   "ssh_mount": false,
-  "subscribe_topics": [
-    "topic.github.issue.comment"
-  ],
   "publish_topics": [
     "topic.github.discussion.summary"
+  ],
+  "entrypoints": [
+    "inbox",
+    "event"
   ]
 }
