@@ -1,0 +1,70 @@
+{
+  "id": "dev-team",
+  "name": "Dev Team",
+  "version": "0.1.0",
+  "description": "Software development team workflow: ticket lifecycle from new to deployed PR",
+  "agents": [
+    "pm",
+    "architect",
+    "developer",
+    "tester",
+    "reviewer",
+    "scrum-master",
+    "product-owner"
+  ],
+  "bindings": {
+    "pm": {
+      "inputs": {
+        "ticket_new": "topic.ticket.new"
+      },
+      "outputs": {
+        "ticket_approved": "topic.ticket.approved"
+      }
+    },
+    "architect": {
+      "inputs": {
+        "spec_request": "topic.ticket.approved"
+      },
+      "outputs": {
+        "spec_ready": "topic.ticket.spec-ready"
+      }
+    },
+    "developer": {
+      "inputs": {
+        "spec_ready": "topic.ticket.spec-ready"
+      },
+      "outputs": {
+        "pr_opened": "topic.pr.opened"
+      }
+    },
+    "tester": {
+      "inputs": {
+        "pr_opened": "topic.pr.opened"
+      },
+      "outputs": {
+        "test_passed": "topic.test.passed"
+      }
+    },
+    "reviewer": {
+      "inputs": {
+        "test_passed": "topic.test.passed"
+      },
+      "outputs": {
+        "pr_review_completed": "topic.pr.review-completed"
+      }
+    },
+    "scrum-master": {
+      "inputs": {
+        "health_check": "topic.health.check"
+      }
+    },
+    "product-owner": {
+      "inputs": {
+        "issue_report": "topic.issue.report"
+      },
+      "outputs": {
+        "issue_triaged": "topic.issue.triaged"
+      }
+    }
+  }
+}

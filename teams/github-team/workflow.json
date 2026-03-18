@@ -1,0 +1,50 @@
+{
+  "id": "github-team",
+  "name": "GitHub Management Team",
+  "version": "0.1.0",
+  "description": "GitHub automation workflow: PR review, vision alignment, and discussion moderation",
+  "agents": [
+    "pr-reviewer",
+    "developer",
+    "vision-keeper",
+    "discussion-facilitator"
+  ],
+  "bindings": {
+    "pr-reviewer": {
+      "inputs": {
+        "pr_opened": "topic.github.pr.opened",
+        "pr_synchronized": "topic.github.pr.synchronized"
+      },
+      "outputs": {
+        "pr_review_completed": "topic.github.pr.review-completed"
+      }
+    },
+    "developer": {
+      "inputs": {
+        "spec_ready": "topic.ticket.spec-ready",
+        "pr_review_completed": "topic.github.pr.review-completed"
+      },
+      "outputs": {
+        "pr_opened": "topic.github.pr.opened"
+      }
+    },
+    "vision-keeper": {
+      "inputs": {
+        "issue_opened": "topic.github.issue.opened",
+        "pr_opened": "topic.github.pr.opened",
+        "vision_check": "topic.github.vision.check"
+      },
+      "outputs": {
+        "vision_verdict": "topic.github.vision.verdict"
+      }
+    },
+    "discussion-facilitator": {
+      "inputs": {
+        "issue_comment": "topic.github.issue.comment"
+      },
+      "outputs": {
+        "discussion_summary": "topic.github.discussion.summary"
+      }
+    }
+  }
+}
