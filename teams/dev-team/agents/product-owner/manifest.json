@@ -7,11 +7,11 @@
   "session_type": "stateless",
   "workspace": false,
   "ssh_mount": false,
-  "subscribe_topics": [
-    "agent.product-owner.inbox",
-    "topic.issue.report"
-  ],
   "publish_topics": [
     "topic.issue.triaged"
+  ],
+  "entrypoints": [
+    "inbox",
+    "task"
   ]
 }

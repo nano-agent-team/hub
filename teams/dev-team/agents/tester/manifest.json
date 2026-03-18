@@ -6,11 +6,11 @@
   "model": "claude-sonnet-4-5",
   "session_type": "stateless",
   "workspace": true,
-  "subscribe_topics": [
-    "agent.tester.inbox",
-    "topic.pr.opened"
-  ],
   "publish_topics": [
     "topic.test.passed"
+  ],
+  "entrypoints": [
+    "inbox",
+    "task"
   ]
 }

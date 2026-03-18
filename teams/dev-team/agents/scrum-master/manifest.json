@@ -5,9 +5,9 @@
   "description": "Monitors stale tickets, reports blockers, triggers health checks",
   "model": "claude-haiku-4-5-20251001",
   "session_type": "stateless",
-  "subscribe_topics": [
-    "agent.scrum-master.inbox",
-    "topic.health.check"
-  ],
-  "publish_topics": []
+  "publish_topics": [],
+  "entrypoints": [
+    "inbox",
+    "task"
+  ]
 }

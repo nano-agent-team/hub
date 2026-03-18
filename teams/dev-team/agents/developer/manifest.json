@@ -7,11 +7,11 @@
   "session_type": "stateless",
   "workspace": true,
   "ssh_mount": true,
-  "subscribe_topics": [
-    "agent.developer.inbox",
-    "topic.ticket.spec-ready"
-  ],
   "publish_topics": [
     "topic.pr.opened"
+  ],
+  "entrypoints": [
+    "inbox",
+    "task"
   ]
 }

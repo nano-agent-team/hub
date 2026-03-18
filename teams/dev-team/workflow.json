@@ -1,0 +1,70 @@
+{
+  "id": "dev-team",
+  "name": "Dev Team",
+  "version": "0.2.0",
+  "description": "Software development team workflow: ticket lifecycle from new to deployed PR",
+  "agents": [
+    "pm",
+    "architect",
+    "developer",
+    "tester",
+    "reviewer",
+    "scrum-master",
+    "product-owner"
+  ],
+  "bindings": {
+    "pm": {
+      "inputs": {
+        "ticket_new": { "from": "topic.ticket.new", "to": "task" }
+      },
+      "outputs": {
+        "ticket_approved": "topic.ticket.approved"
+      }
+    },
+    "architect": {
+      "inputs": {
+        "spec_request": { "from": "topic.ticket.approved", "to": "task" }
+      },
+      "outputs": {
+        "spec_ready": "topic.ticket.spec-ready"
+      }
+    },
+    "developer": {
+      "inputs": {
+        "spec_ready": { "from": "topic.ticket.spec-ready", "to": "task" }
+      },
+      "outputs": {
+        "pr_opened": "topic.pr.opened"
+      }
+    },
+    "tester": {
+      "inputs": {
+        "pr_opened": { "from": "topic.pr.opened", "to": "task" }
+      },
+      "outputs": {
+        "test_passed": "topic.test.passed"
+      }
+    },
+    "reviewer": {
+      "inputs": {
+        "test_passed": { "from": "topic.test.passed", "to": "task" }
+      },
+      "outputs": {
+        "pr_review_completed": "topic.pr.review-completed"
+      }
+    },
+    "scrum-master": {
+      "inputs": {
+        "health_check": { "from": "topic.health.check", "to": "task" }
+      }
+    },
+    "product-owner": {
+      "inputs": {
+        "issue_report": { "from": "topic.issue.report", "to": "task" }
+      },
+      "outputs": {
+        "issue_triaged": "topic.issue.triaged"
+      }
+    }
+  }
+}
