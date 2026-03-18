@@ -77,17 +77,31 @@ export class Poller {
             const lastBotActivityDate = lastBotCommentDate && lastBotReviewDate
                 ? new Date(Math.max(lastBotCommentDate.getTime(), lastBotReviewDate.getTime()))
                 : lastBotCommentDate ?? lastBotReviewDate;
+            const latestSha = latestCommit.sha;
+            const lastPublishedSha = this.state.getPrHead(repo, pr.number);
             if (!lastBotActivityDate) {
-                // No bot activity yet — treat as new PR
-                const event = prToNats(repo, pr, 'opened', ghToken);
-                await this.publish(event.topic, JSON.stringify(event.payload));
-                console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (no prior review)`);
+                // No bot activity yet — only publish if we haven't already queued this SHA
+                if (lastPublishedSha !== latestSha) {
+                    const event = prToNats(repo, pr, 'opened', ghToken);
+                    await this.publish(event.topic, JSON.stringify(event.payload));
+                    this.state.setPrHead(repo, pr.number, latestSha);
+                    console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (no prior review)`);
+                }
+                else {
+                    console.log(`[github-team poller] PR#${pr.number} already queued for SHA ${latestSha.slice(0, 7)} — skip`);
+                }
             }
             else if (latestCommitDate > lastBotActivityDate) {
-                // New commits pushed after last review
-                const event = prToNats(repo, pr, 'synchronized', ghToken);
-                await this.publish(event.topic, JSON.stringify(event.payload));
-                console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (new commits since ${lastBotActivityDate.toISOString()})`);
+                // New commits pushed after last review — only publish if SHA is new
+                if (lastPublishedSha !== latestSha) {
+                    const event = prToNats(repo, pr, 'synchronized', ghToken);
+                    await this.publish(event.topic, JSON.stringify(event.payload));
+                    this.state.setPrHead(repo, pr.number, latestSha);
+                    console.log(`[github-team poller] ${event.topic} PR#${pr.number} in ${repo} (new commits since ${lastBotActivityDate.toISOString()})`);
+                }
+                else {
+                    console.log(`[github-team poller] PR#${pr.number} already queued for SHA ${latestSha.slice(0, 7)} — skip`);
+                }
             }
             else {
                 // No new commits — check if bot was explicitly requested to review

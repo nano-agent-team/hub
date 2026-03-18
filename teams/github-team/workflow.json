@@ -21,8 +21,8 @@
     },
     "developer": {
       "inputs": {
-        "spec_ready":          { "from": "topic.ticket.spec-ready",          "to": "task" },
-        "pr_review_completed": { "from": "topic.github.pr.review-completed", "to": "task" }
+        "spec_ready":          { "from": "topic.ticket.spec-ready",          "to": "event" },
+        "pr_review_completed": { "from": "topic.github.pr.review-completed", "to": "event" }
       },
       "outputs": {
         "pr_opened": "topic.github.pr.opened"
