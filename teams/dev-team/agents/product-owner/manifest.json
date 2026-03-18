@@ -2,7 +2,7 @@
   "id": "product-owner",
   "name": "Product Owner",
   "version": "0.1.0",
-  "description": "Maintains GitHub issues \u2014 receives reports from agents, deduplicates and triages issues",
+  "description": "Maintains GitHub issues — receives reports from agents, deduplicates and triages issues",
   "model": "claude-sonnet-4-6",
   "session_type": "stateless",
   "workspace": false,
