@@ -1,0 +1,4 @@
+node_modules/
+plugin-dist/
+teams/*/node_modules/
+teams/*/plugin-dist/
