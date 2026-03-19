@@ -1,0 +1,22 @@
+{
+  "id": "agent-creator",
+  "name": "Agent Creator",
+  "version": "0.1.0",
+  "description": "Conversational agent that creates and modifies agents from natural language descriptions. Generates manifest.json, CLAUDE.md, and optional Dockerfile, then builds the Docker image.",
+  "model": "claude-opus-4-6",
+  "session_type": "stateful",
+  "entrypoints": ["inbox"],
+  "mcp_permissions": {
+    "management": [
+      "get_system_status",
+      "get_agent_definition",
+      "save_agent_definition",
+      "build_agent_image",
+      "start_agent",
+      "stop_agent",
+      "fetch_hub",
+      "list_hub_teams",
+      "install_agent"
+    ]
+  }
+}
