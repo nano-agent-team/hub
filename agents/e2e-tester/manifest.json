@@ -1,0 +1,26 @@
+{
+  "id": "e2e-tester",
+  "name": "E2E Tester",
+  "version": "0.1.0",
+  "description": "Browser-based end-to-end testing agent using Playwright MCP. No secrets — uses session from Login Provider. Triggered optionally after commit or on demand.",
+  "model": "claude-sonnet-4-5",
+  "session_type": "stateless",
+  "publish_topics": [
+    "topic.e2e.passed",
+    "topic.e2e.failed"
+  ],
+  "entrypoints": [
+    "inbox",
+    "task"
+  ],
+  "mcp_permissions": {
+    "playwright": [
+      "*"
+    ],
+    "tickets": [
+      "ticket_get",
+      "ticket_update",
+      "ticket_comment"
+    ]
+  }
+}

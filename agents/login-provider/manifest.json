@@ -1,0 +1,20 @@
+{
+  "id": "login-provider",
+  "name": "Login Provider",
+  "version": "0.1.0",
+  "description": "Deterministic agent: handles browser-based OAuth/session authentication via Playwright. Injects session state for other agents. Never exposes raw credentials.",
+  "model": "claude-haiku-4-5-20251001",
+  "session_type": "stateless",
+  "publish_topics": [
+    "topic.session.ready"
+  ],
+  "entrypoints": [
+    "inbox",
+    "task"
+  ],
+  "mcp_permissions": {
+    "playwright": [
+      "*"
+    ]
+  }
+}

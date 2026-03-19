@@ -1,0 +1,17 @@
+{
+  "id": "committer",
+  "name": "Committer",
+  "version": "0.1.0",
+  "description": "Deterministic agent: git commit, push, and PR creation. Holds SSH keys and GH_TOKEN. No LLM reasoning — executes a fixed script.",
+  "model": "claude-haiku-4-5-20251001",
+  "session_type": "stateless",
+  "workspace": true,
+  "ssh_mount": true,
+  "publish_topics": [
+    "topic.commit.done"
+  ],
+  "entrypoints": [
+    "inbox",
+    "task"
+  ]
+}

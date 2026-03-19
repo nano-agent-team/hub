@@ -1,14 +1,13 @@
 {
   "id": "developer",
   "name": "Software Developer",
-  "version": "0.1.0",
-  "description": "Implements features according to tech spec, creates PRs",
+  "version": "0.2.0",
+  "description": "Implements features according to tech spec. RW workspace mount, no secrets. Runs unit tests internally. Delegates git operations to Committer.",
   "model": "claude-sonnet-4-5",
   "session_type": "stateless",
   "workspace": true,
-  "ssh_mount": true,
   "publish_topics": [
-    "topic.pr.opened"
+    "topic.dev.done"
   ],
   "entrypoints": [
     "inbox",

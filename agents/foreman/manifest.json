@@ -1,0 +1,26 @@
+{
+  "id": "foreman",
+  "name": "Foreman",
+  "version": "0.1.0",
+  "description": "Interactive project onboarding agent. Analyzes a GitHub repo, assembles the right team, and spawns custom agents via Agent Creator. One-time setup for new projects.",
+  "model": "claude-sonnet-4-6",
+  "session_type": "stateful",
+  "entrypoints": [
+    "inbox"
+  ],
+  "publish_topics": [
+    "topic.agent.create",
+    "topic.team.ready"
+  ],
+  "mcp_permissions": {
+    "management": [
+      "get_system_status",
+      "get_agent_definition",
+      "install_agent",
+      "start_agent",
+      "stop_agent",
+      "list_hub_teams",
+      "fetch_hub"
+    ]
+  }
+}
