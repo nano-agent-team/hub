@@ -1,15 +1,16 @@
 {
   "id": "dev-team",
   "name": "Dev Team",
-  "description": "Software development team — PM, Architect, Developer, Tester, Reviewer, Scrum Master, Product Owner",
-  "version": "0.1.0",
+  "description": "Software development team — full pipeline from ticket to merged PR. Agents are referenced from hub/agents/ (flat structure).",
+  "version": "0.2.0",
   "status": "stable",
   "agents": [
     "pm",
+    "workspace-provider",
     "architect",
     "developer",
-    "tester",
     "reviewer",
+    "committer",
     "scrum-master",
     "product-owner"
   ],
@@ -19,10 +20,11 @@
     "topics": {
       "ticket_new": "topic.ticket.new",
       "ticket_approved": "topic.ticket.approved",
+      "workspace_ready": "topic.workspace.ready",
       "ticket_spec_ready": "topic.ticket.spec-ready",
-      "pr_opened": "topic.pr.opened",
-      "test_passed": "topic.test.passed",
-      "pr_review_completed": "topic.pr.review-completed",
+      "dev_done": "topic.dev.done",
+      "review_passed": "topic.review.passed",
+      "commit_done": "topic.commit.done",
       "health_check": "topic.health.check",
       "issue_report": "topic.issue.report",
       "issue_triaged": "topic.issue.triaged"

@@ -1,0 +1,17 @@
+{
+  "id": "workspace-provider",
+  "name": "Workspace Provider",
+  "version": "0.1.0",
+  "description": "Deterministic agent: clones repo and creates feature branch. Holds SSH/GH_TOKEN. No LLM reasoning — executes a fixed script.",
+  "model": "claude-haiku-4-5-20251001",
+  "session_type": "stateless",
+  "workspace": true,
+  "ssh_mount": true,
+  "publish_topics": [
+    "topic.workspace.ready"
+  ],
+  "entrypoints": [
+    "inbox",
+    "task"
+  ]
+}

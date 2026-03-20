@@ -1,12 +1,13 @@
 {
   "id": "github-team",
   "name": "GitHub Management Team",
-  "description": "Multi-agent team for automated GitHub repository management: PR reviews, feature development, vision alignment, and discussion moderation",
-  "version": "0.1.0",
+  "description": "Multi-agent team for automated GitHub repository management: PR reviews, vision alignment, and discussion moderation. Agents are referenced from hub/agents/ (flat structure).",
+  "version": "0.2.0",
   "status": "experimental",
   "agents": [
     "pr-reviewer",
     "developer",
+    "committer",
     "vision-keeper",
     "discussion-facilitator"
   ],
@@ -16,6 +17,8 @@
       "pr_opened": "topic.github.pr.opened",
       "pr_synchronized": "topic.github.pr.synchronized",
       "pr_review_completed": "topic.github.pr.review-completed",
+      "dev_done": "topic.dev.done",
+      "commit_done": "topic.commit.done",
       "issue_opened": "topic.github.issue.opened",
       "issue_comment": "topic.github.issue.comment",
       "vision_verdict": "topic.github.vision.verdict"

@@ -1,19 +1,20 @@
 {
   "id": "github-team",
   "name": "GitHub Management Team",
-  "version": "0.2.0",
-  "description": "GitHub automation workflow: PR review, vision alignment, and discussion moderation",
+  "version": "0.3.0",
+  "description": "GitHub automation workflow: PR review, vision alignment, and discussion moderation. Developer uses shared agent; Committer handles git push.",
   "agents": [
     "pr-reviewer",
     "developer",
+    "committer",
     "vision-keeper",
     "discussion-facilitator"
   ],
   "bindings": {
     "pr-reviewer": {
       "inputs": {
-        "pr_opened":      { "from": "topic.github.pr.opened",       "to": "event" },
-        "pr_synchronized": { "from": "topic.github.pr.synchronized", "to": "event" }
+        "pr_opened":       { "from": "topic.github.pr.opened",       "to": "event" },
+        "pr_synchronized": { "from": "topic.github.pr.synchronized",  "to": "event" }
       },
       "outputs": {
         "pr_review_completed": "topic.github.pr.review-completed"
@@ -25,14 +26,23 @@
         "pr_review_completed": { "from": "topic.github.pr.review-completed", "to": "event" }
       },
       "outputs": {
+        "dev_done": "topic.dev.done"
+      }
+    },
+    "committer": {
+      "inputs": {
+        "dev_done": { "from": "topic.dev.done", "to": "event" }
+      },
+      "outputs": {
+        "commit_done": "topic.commit.done",
         "pr_opened": "topic.github.pr.opened"
       }
     },
     "vision-keeper": {
       "inputs": {
-        "issue_opened": { "from": "topic.github.issue.opened",  "to": "event" },
-        "pr_opened":    { "from": "topic.github.pr.opened",     "to": "event" },
-        "vision_check": { "from": "topic.github.vision.check",  "to": "event" }
+        "issue_opened": { "from": "topic.github.issue.opened", "to": "event" },
+        "pr_opened":    { "from": "topic.github.pr.opened",    "to": "event" },
+        "vision_check": { "from": "topic.github.vision.check", "to": "event" }
       },
       "outputs": {
         "vision_verdict": "topic.github.vision.verdict"
