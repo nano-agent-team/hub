@@ -13,14 +13,23 @@
     "topic.team.ready"
   ],
   "mcp_permissions": {
+    "config": [
+      "config_status",
+      "list_secrets",
+      "check_secrets",
+      "setup_complete"
+    ],
     "management": [
       "get_system_status",
-      "get_agent_definition",
+      "fetch_hub",
+      "list_hub_teams",
+      "get_hub_team",
+      "install_team",
       "install_agent",
+      "get_agent_definition",
       "start_agent",
       "stop_agent",
-      "list_hub_teams",
-      "fetch_hub"
+      "restart_mcp_server"
     ]
   }
 }
