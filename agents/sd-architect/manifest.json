@@ -1,0 +1,13 @@
+{
+  "id": "sd-architect",
+  "name": "Self-Dev Architect",
+  "version": "0.1.0",
+  "description": "Inspects source code and writes implementation spec into approved tickets. Sets status to in_progress to trigger Developer.",
+  "model": "claude-opus-4-6",
+  "session_type": "stateless",
+  "project_workspace": true,
+  "entrypoints": ["inbox", "task"],
+  "mcp_permissions": {
+    "tickets": ["get", "update", "comment"]
+  }
+}
