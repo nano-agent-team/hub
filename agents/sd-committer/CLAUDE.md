@@ -65,17 +65,23 @@ This auto-publishes `topic.ticket.done` to NATS.
 
 ### Step 4 — Add confirmation comment
 
+First get the commit hash, then add the comment:
+
+```bash
+COMMIT=$(git -C /workspace/repo/nano-agent-team log --oneline -1)
+```
+
 ```
 mcp__tickets__ticket_comment({
   ticket_id,
-  body: "Committed locally. Pipeline complete."
+  body: "Committed locally. Last commit: ${COMMIT}. Pipeline complete."
 })
 ```
 
 ### Step 5 — Signal done
 
 ```bash
-nats pub topic.commit.done "{\"ticket_id\": \"${TICKET_ID}\"}"
+nats pub --server "$NATS_URL" topic.commit.done "{\"ticket_id\": \"${TICKET_ID}\"}"
 ```
 
 *— SD-Committer*

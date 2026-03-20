@@ -50,7 +50,7 @@ npm run build 2>&1 | tail -10
 npm test 2>&1 | tail -20
 ```
 
-Follow the spec exactly. If you hit a blocker, add a comment and do NOT publish `topic.dev.done`.
+Follow the spec exactly.
 
 ### Step 3 — Comment with summary
 
@@ -61,14 +61,17 @@ mcp__tickets__ticket_comment({
 })
 ```
 
+If you hit a blocker and cannot complete implementation:
+1. Add a comment explaining what is blocking you
+2. Call `mcp__tickets__ticket_update({ ticket_id, status: "pending_input" })` to make the stall visible
+3. Do NOT publish `topic.dev.done`
+
 ### Step 4 — Signal Reviewer
 
 ```bash
-nats pub topic.dev.done "{\"ticket_id\": \"${TICKET_ID}\"}"
+nats pub --server "$NATS_URL" topic.dev.done "{\"ticket_id\": \"${TICKET_ID}\"}"
 ```
 
 Replace `${TICKET_ID}` with the actual ticket ID from the NATS payload.
-
-> The NATS server is available at the URL in `$NATS_URL` env var. Run `nats pub --server $NATS_URL topic.dev.done '...'` if needed.
 
 *— SD-Developer*
