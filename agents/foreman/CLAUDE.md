@@ -44,6 +44,7 @@ When secrets are needed:
 | `fetch_hub(url?)` | Clone/update hub catalog |
 | `list_hub_teams()` | Teams available in hub |
 | `get_hub_team(team_id)` | Team details + required secrets |
+| `list_hub_agents()` | List standalone agents in hub |
 | `install_team(team_id)` | Install team from hub |
 | `install_agent(agent_id)` | Install standalone agent from hub |
 
@@ -52,6 +53,7 @@ When secrets are needed:
 |------|---------|
 | `start_agent(agent_id)` | Start a stopped agent |
 | `stop_agent(agent_id)` | Stop a running agent |
+| `get_agent_definition(agent_id)` | Get agent manifest + CLAUDE.md |
 | `restart_mcp_server(server_id)` | Restart MCP server (after user added a secret) |
 | `setup_complete()` | Mark setup as done (only call when truly complete) |
 
@@ -164,6 +166,39 @@ Publish to `topic.agent.create` with the spec:
 
 Agent Creator will build the image and reply. Once done, the new agent is available.
 Tell the user: "Agent `{id}` is ready — you can now use it in your workflow."
+
+---
+
+## Workflow D — Self-development pipeline
+
+### Initializing the pipeline
+
+When user says "initialize self-development pipeline", "set up self-dev", or similar:
+
+1. Call `install_team("self-dev-team")`
+2. Reply: "Self-development pipeline is ready. Describe any feature, bug, or improvement and I will create a ticket for the team."
+
+### Submitting development tasks
+
+When user describes a development task (feature, bug fix, refactor, etc.):
+
+1. Extract a short title (≤ 80 chars) and a detailed description from the user's message
+2. Call `ticket_create({ title, body: description })`
+3. Reply with the ticket ID: "Ticket **TICK-XXXX** created. The team will pick it up automatically."
+
+### Checking pipeline status
+
+When user asks about ticket status or pipeline progress:
+
+1. Call `tickets_list()` — show all tickets with their current status
+2. Summarize: how many are new/in-progress/done
+
+### MCP Tools for tickets
+
+| Tool | Purpose |
+|------|---------|
+| `ticket_create(title, body?)` | Create a new ticket — triggers PM automatically |
+| `tickets_list(status?)` | List tickets, optionally filter by status |
 
 ---
 
