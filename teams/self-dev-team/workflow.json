@@ -1,0 +1,51 @@
+{
+  "id": "self-dev-team",
+  "name": "Self-Dev Team",
+  "version": "0.1.0",
+  "description": "PM polls topic.ticket.new → Architect → Developer → Reviewer → Committer (local git commit only)",
+  "agents": ["sd-pm", "sd-architect", "sd-developer", "sd-reviewer", "sd-committer"],
+  "bindings": {
+    "sd-pm": {
+      "inputs": {
+        "ticket_new": { "from": "topic.ticket.new", "to": "task" }
+      },
+      "outputs": {
+        "ticket_approved": "topic.ticket.approved"
+      }
+    },
+    "sd-architect": {
+      "inputs": {
+        "ticket_approved": { "from": "topic.ticket.approved", "to": "task" }
+      },
+      "outputs": {
+        "spec_ready": "topic.ticket.spec-ready"
+      }
+    },
+    "sd-developer": {
+      "inputs": {
+        "spec_ready": { "from": "topic.ticket.spec-ready", "to": "task" },
+        "dev_retry": { "from": "topic.dev.retry", "to": "task" }
+      },
+      "outputs": {
+        "dev_done": "topic.dev.done"
+      }
+    },
+    "sd-reviewer": {
+      "inputs": {
+        "dev_done": { "from": "topic.dev.done", "to": "task" }
+      },
+      "outputs": {
+        "review_passed": "topic.review.passed",
+        "dev_retry": "topic.dev.retry"
+      }
+    },
+    "sd-committer": {
+      "inputs": {
+        "review_passed": { "from": "topic.review.passed", "to": "task" }
+      },
+      "outputs": {
+        "commit_done": "topic.commit.done"
+      }
+    }
+  }
+}

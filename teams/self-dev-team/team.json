@@ -1,0 +1,8 @@
+{
+  "id": "self-dev-team",
+  "name": "Self-Dev Team",
+  "version": "0.1.0",
+  "description": "Self-improvement pipeline for nano-agent-team. Zero external secrets required. PM → Architect → Developer → Reviewer → Committer.",
+  "required_secrets": [],
+  "agents": ["sd-pm", "sd-architect", "sd-developer", "sd-reviewer", "sd-committer"]
+}
