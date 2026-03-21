@@ -1,0 +1,13 @@
+{
+  "id": "sd-release-manager",
+  "name": "Self-Dev Release Manager",
+  "model": "claude-sonnet-4-6",
+  "session_type": "stateless",
+  "workspace_source": "ticket",
+  "entrypoints": ["inbox", "task"],
+  "publish_topics": ["topic.release.ready", "topic.merge.conflict"],
+  "mcp_permissions": {
+    "management": ["workspace_get", "workspace_return"],
+    "tickets": ["get", "comment"]
+  }
+}
