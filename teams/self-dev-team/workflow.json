@@ -1,9 +1,9 @@
 {
   "id": "self-dev-team",
   "name": "Self-Dev Team",
-  "version": "0.1.0",
-  "description": "PM polls topic.ticket.new → Architect → Developer → Reviewer → Committer (local git commit only)",
-  "agents": ["sd-pm", "sd-architect", "sd-developer", "sd-reviewer", "sd-committer"],
+  "version": "0.2.0",
+  "description": "PM → Architect → Developer → Reviewer → Committer → Release Manager → Ops (deploy) / Hub Publisher (PRs)",
+  "agents": ["sd-pm", "sd-architect", "sd-developer", "sd-reviewer", "sd-committer", "sd-release-manager", "sd-ops", "sd-hub-publisher", "foreman"],
   "bindings": {
     "sd-pm": {
       "inputs": {
@@ -24,7 +24,8 @@
     "sd-developer": {
       "inputs": {
         "spec_ready": { "from": "topic.ticket.spec-ready", "to": "task" },
-        "dev_retry": { "from": "topic.dev.retry", "to": "task" }
+        "dev_retry": { "from": "topic.dev.retry", "to": "task" },
+        "merge_conflict": { "from": "topic.merge.conflict", "to": "task" }
       },
       "outputs": {
         "dev_done": "topic.dev.done"
@@ -45,6 +46,40 @@
       },
       "outputs": {
         "commit_done": "topic.commit.done"
+      }
+    },
+    "sd-release-manager": {
+      "inputs": {
+        "commit_done": { "from": "topic.commit.done", "to": "task" },
+        "deploy_done": { "from": "topic.deploy.done", "to": "task" }
+      },
+      "outputs": {
+        "release_ready": "topic.release.ready",
+        "merge_conflict": "topic.merge.conflict"
+      }
+    },
+    "sd-ops": {
+      "inputs": {
+        "release_ready": { "from": "topic.release.ready", "to": "task" }
+      },
+      "outputs": {
+        "deploy_done": "topic.deploy.done",
+        "deploy_failed": "topic.deploy.failed",
+        "hub_deploy": "topic.hub.deploy"
+      }
+    },
+    "sd-hub-publisher": {
+      "inputs": {
+        "hub_deploy": { "from": "topic.hub.deploy", "to": "task" }
+      },
+      "outputs": {
+        "hub_published": "topic.hub.published"
+      }
+    },
+    "foreman": {
+      "inputs": {
+        "deploy_failed": { "from": "topic.deploy.failed", "to": "task" },
+        "hub_published": { "from": "topic.hub.published", "to": "task" }
       }
     }
   }

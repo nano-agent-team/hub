@@ -33,11 +33,20 @@ mcp__tickets__ticket_get({ ticket_id })
 
 Note the `title` field — used in the commit message.
 
-### Step 2 — Stage and commit
+### Step 2 — Create feature branch
 
 ```bash
 cd /workspace/repo/nano-agent-team
 
+# Create a feature branch for this ticket (isolates changes from main)
+git checkout -b feat/${TICKET_ID}
+```
+
+Replace `${TICKET_ID}` with the ticket ID (e.g., `feat/TICK-0005`).
+
+### Step 3 — Stage and commit
+
+```bash
 # Review what will be committed
 git status
 git diff --stat
@@ -55,7 +64,7 @@ Replace `${TICKET_TITLE}` with the ticket's title and `${TICKET_ID}` with the ti
 
 If there is nothing to commit (git status clean), the Developer may have already committed. Check `git log --oneline -3` and skip the commit step.
 
-### Step 3 — Close ticket
+### Step 4 — Close ticket
 
 ```
 mcp__tickets__ticket_update({ ticket_id, status: "done" })
@@ -63,7 +72,7 @@ mcp__tickets__ticket_update({ ticket_id, status: "done" })
 
 This auto-publishes `topic.ticket.done` to NATS.
 
-### Step 4 — Add confirmation comment
+### Step 5 — Add confirmation comment
 
 First get the commit hash, then add the comment:
 
@@ -78,10 +87,29 @@ mcp__tickets__ticket_comment({
 })
 ```
 
-### Step 5 — Signal done
+### Step 6 — Push feature branch
+
+Push the feature branch to remote (Release Manager will merge it into main):
 
 ```bash
-nats pub --server "$NATS_URL" topic.commit.done "{\"ticket_id\": \"${TICKET_ID}\"}"
+cd /workspace/repo
+git push origin HEAD
 ```
+
+### Step 7 — Signal done
+
+```bash
+nats pub --server "$NATS_URL" topic.commit.done "{\"ticket_id\": \"${TICKET_ID}\", \"workspaceId\": \"${WORKSPACE_ID}\"}"
+```
+
+Replace `${WORKSPACE_ID}` with the workspaceId from the NATS payload.
+
+## Push-only case (after merge conflict resolution)
+
+If the latest commit is a merge commit (check with `git log --oneline -1 --merges`), the developer already resolved the merge and committed. In this case:
+
+1. Do NOT run `git add` or `git commit` — the merge commit is already done
+2. Push the branch: `git push origin HEAD`
+3. Update ticket status and signal done as normal
 
 *— SD-Committer*

@@ -7,6 +7,7 @@
   "session_type": "stateless",
   "entrypoints": ["inbox", "task"],
   "mcp_permissions": {
-    "tickets": ["list", "get", "approve", "reject", "create", "update", "comment"]
+    "tickets": ["list", "get", "approve", "reject", "create", "update", "comment"],
+    "management": ["alarm_set", "alarm_cancel", "alarm_list", "get_system_status", "workspace_create"]
   }
 }

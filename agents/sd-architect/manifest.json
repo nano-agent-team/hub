@@ -5,7 +5,7 @@
   "description": "Inspects source code and writes implementation spec into approved tickets. Sets status to in_progress to trigger Developer.",
   "model": "claude-opus-4-6",
   "session_type": "stateless",
-  "project_workspace": true,
+  "workspace_source": "ticket",
   "entrypoints": ["inbox", "task"],
   "mcp_permissions": {
     "tickets": ["get", "update", "comment"]

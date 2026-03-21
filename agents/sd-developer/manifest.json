@@ -5,7 +5,7 @@
   "description": "Implements features in the nano-agent-team-project workspace. Has RW access to /workspace/repo. No push — delegates to Committer.",
   "model": "claude-sonnet-4-6",
   "session_type": "stateless",
-  "project_workspace": true,
+  "workspace_source": "ticket",
   "entrypoints": ["inbox", "task"],
   "publish_topics": ["topic.dev.done"],
   "mcp_permissions": {

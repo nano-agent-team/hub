@@ -74,4 +74,63 @@ nats pub --server "$NATS_URL" topic.dev.done "{\"ticket_id\": \"${TICKET_ID}\"}"
 
 Replace `${TICKET_ID}` with the actual ticket ID from the NATS payload.
 
+## Workflow: On `topic.merge.conflict`
+
+Payload: `{ ticket_id, workspaceId, conflicting_files }`
+
+The Release Manager attempted to merge your feature branch into main and found conflicts. The worktree contains unresolved merge conflict markers.
+
+### Step 1 — Read context
+
+```
+mcp__tickets__ticket_get({ ticket_id })
+```
+
+Read the Release Manager's comment for details on which files conflict and why.
+
+### Step 2 — Resolve conflicts
+
+Open each conflicting file. You will see conflict markers like:
+
+```
+<<<<<<< HEAD
+// Code from main (changed by another ticket)
+=======
+// Your code (from this feature branch)
+>>>>>>> feat/TICK-XXXX
+```
+
+Resolve each conflict by keeping the correct code. Remove ALL conflict markers.
+
+### Step 3 — Verify
+
+```bash
+cd /workspace/repo
+git status
+npm run build 2>&1 | tail -10
+npm test 2>&1 | tail -20
+```
+
+### Step 4 — Commit the merge resolution
+
+```bash
+git add .
+git commit    # Creates a merge commit
+```
+
+### Step 5 — Signal done
+
+```
+mcp__tickets__ticket_comment({
+  ticket_id,
+  body: "Merge conflict resolved. Tests passing."
+})
+```
+
+```bash
+nats pub --server "$NATS_URL" topic.dev.done "{\"ticket_id\": \"${TICKET_ID}\", \"workspaceId\": \"${WORKSPACE_ID}\"}"
+```
+
+The ticket goes back through review → committer → release manager.
+
 *— SD-Developer*
