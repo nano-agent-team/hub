@@ -1,6 +1,7 @@
 {
   "id": "sd-ops",
   "name": "Self-Dev Operations Agent",
+  "version": "0.1.0",
   "model": "claude-sonnet-4-6",
   "session_type": "stateless",
   "entrypoints": ["inbox", "task"],

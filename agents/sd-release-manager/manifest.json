@@ -1,6 +1,7 @@
 {
   "id": "sd-release-manager",
   "name": "Self-Dev Release Manager",
+  "version": "0.1.0",
   "model": "claude-sonnet-4-6",
   "session_type": "stateless",
   "workspace_source": "ticket",
