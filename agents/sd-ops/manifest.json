@@ -1,0 +1,12 @@
+{
+  "id": "sd-ops",
+  "name": "Self-Dev Operations Agent",
+  "model": "claude-sonnet-4-6",
+  "session_type": "stateless",
+  "entrypoints": ["inbox", "task"],
+  "publish_topics": ["topic.deploy.done", "topic.deploy.failed", "topic.hub.deploy"],
+  "mcp_permissions": {
+    "management": ["deploy_feature", "restart_self", "health_check"],
+    "tickets": ["get", "comment"]
+  }
+}
