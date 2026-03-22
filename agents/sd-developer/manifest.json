@@ -10,6 +10,7 @@
     "inbox",
     "task"
   ],
+  "subscribe_topics": ["agent.sd-developer.inbox", "agent.sd-developer.task"],
   "publish_topics": [
     "topic.dev.done"
   ],

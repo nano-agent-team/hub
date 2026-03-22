@@ -8,6 +8,7 @@
     "inbox",
     "task"
   ],
+  "subscribe_topics": ["agent.sd-ops.inbox", "agent.sd-ops.task"],
   "publish_topics": [
     "topic.deploy.done",
     "topic.deploy.failed",

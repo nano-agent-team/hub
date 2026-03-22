@@ -5,6 +5,7 @@
   "model": "claude-sonnet-4-6",
   "session_type": "stateless",
   "entrypoints": ["inbox", "task"],
+  "subscribe_topics": ["agent.sd-hub-publisher.inbox", "agent.sd-hub-publisher.task"],
   "publish_topics": ["topic.hub.published"],
   "mcp_permissions": {
     "management": ["workspace_create", "workspace_return", "workspace_get"],

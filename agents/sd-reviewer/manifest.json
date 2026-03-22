@@ -10,6 +10,7 @@
     "inbox",
     "task"
   ],
+  "subscribe_topics": ["agent.sd-reviewer.inbox", "agent.sd-reviewer.task"],
   "publish_topics": [
     "topic.review.passed",
     "topic.dev.retry"

@@ -9,6 +9,7 @@
     "inbox",
     "task"
   ],
+  "subscribe_topics": ["agent.foreman.inbox", "agent.foreman.task"],
   "publish_topics": [
     "topic.agent.create",
     "topic.team.ready"

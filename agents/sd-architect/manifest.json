@@ -10,6 +10,7 @@
     "inbox",
     "task"
   ],
+  "subscribe_topics": ["agent.sd-architect.inbox", "agent.sd-architect.task"],
   "mcp_permissions": {
     "tickets": [
       "get",

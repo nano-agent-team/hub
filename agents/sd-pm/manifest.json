@@ -6,6 +6,7 @@
   "model": "claude-sonnet-4-6",
   "session_type": "stateless",
   "entrypoints": ["inbox", "task"],
+  "subscribe_topics": ["agent.sd-pm.inbox", "agent.sd-pm.task", "topic.ticket.new"],
   "mcp_permissions": {
     "tickets": ["list", "get", "approve", "reject", "create", "comment"],
     "management": ["alarm_set", "alarm_cancel", "alarm_list", "get_system_status", "workspace_create"]
