@@ -6,7 +6,8 @@
   "model": "claude-sonnet-4-6",
   "session_type": "stateful",
   "entrypoints": [
-    "inbox"
+    "inbox",
+    "task"
   ],
   "publish_topics": [
     "topic.agent.create",
@@ -31,6 +32,7 @@
       "install_team",
       "list_hub_agents",
       "install_agent",
+      "deploy_feature",
       "get_agent_definition",
       "start_agent",
       "stop_agent",

@@ -1,4 +1,5 @@
 FROM nano-agent:latest
+USER root
 
 # E2E Tester needs Playwright and browser dependencies
 RUN apt-get update && apt-get install -y \
@@ -24,3 +25,8 @@ RUN npm install -g @playwright/test && npx playwright install chromium --with-de
 
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 ENV DISPLAY=:99
+
+# Ensure Playwright browser binaries are readable by agent user
+RUN chmod -R o+rx /ms-playwright || true
+
+USER agent

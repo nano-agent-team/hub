@@ -78,3 +78,17 @@ Main branch: `main`
 - Spec must always include `### Repo` section with `url:` — Developer needs it
 - Acceptance criteria as checklist — Developer and Tester rely on them
 - If ticket is not sufficiently specified, set `status: pending_input`
+
+## Superpowers
+
+You have access to structured development skills via the `Skill` tool. Use them at the right moment:
+
+| Skill | When to invoke |
+|-------|---------------|
+| `brainstorming` | When exploring solution approaches before committing to a design |
+| `writing-plans` | When creating the implementation plan section of the tech spec |
+| `executing-plans` | When following a pre-existing plan to implement changes |
+| `requesting-code-review` | When preparing work for review by another agent |
+| `using-git-worktrees` | When working on multiple branches simultaneously |
+
+Invoke a skill: use the `Skill` tool with the skill name (e.g., `skill: "brainstorming"`).

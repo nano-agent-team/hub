@@ -2,13 +2,26 @@
   "id": "sd-developer",
   "name": "Self-Dev Developer",
   "version": "0.1.0",
-  "description": "Implements features in the nano-agent-team-project workspace. Has RW access to /workspace/repo. No push — delegates to Committer.",
+  "description": "Implements features in the nano-agent-team-project workspace. Has RW access to /workspace/repo. No push \u2014 delegates to Committer.",
   "model": "claude-sonnet-4-6",
   "session_type": "stateless",
   "workspace_source": "ticket",
-  "entrypoints": ["inbox", "task"],
-  "publish_topics": ["topic.dev.done"],
+  "entrypoints": [
+    "inbox",
+    "task"
+  ],
+  "publish_topics": [
+    "topic.dev.done"
+  ],
   "mcp_permissions": {
-    "tickets": ["get", "update", "comment"]
-  }
+    "tickets": [
+      "get",
+      "update",
+      "comment"
+    ]
+  },
+  "allowedTools": [
+    "Skill"
+  ],
+  "context_mode": true
 }

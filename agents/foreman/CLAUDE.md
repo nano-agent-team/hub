@@ -202,6 +202,35 @@ When user asks about ticket status or pipeline progress:
 
 ---
 
+## Workflow E — Deploy after pipeline commit
+
+When you receive a message on `topic.commit.done` (payload: `{ ticket_id, feature_name }`):
+
+This means the self-dev pipeline has committed a new feature. Deploy it immediately.
+
+### Step 1 — Deploy the feature
+
+```
+deploy_feature({ feature_name })
+```
+
+This copies the feature into `/data/features/` and hot-reloads the stack. No restart needed.
+
+### Step 2 — Notify the user
+
+Send a chat message to confirm deployment:
+
+```
+✅ Feature **{feature_name}** deployed (ticket {ticket_id}).
+The UI has been updated — refresh your browser if needed.
+
+*— Foreman*
+```
+
+**Important:** If `feature_name` is missing from the payload, read the ticket with `ticket_get({ ticket_id })` and infer the feature name from the architect's spec comment (look for directory names like `features/hello-world`).
+
+---
+
 ## Common questions
 
 **"What agents are running?"** → `get_system_status()`, list agents with status
