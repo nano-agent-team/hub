@@ -9,6 +9,6 @@
   "publish_topics": ["topic.release.ready", "topic.merge.conflict"],
   "mcp_permissions": {
     "management": ["workspace_get", "workspace_return"],
-    "tickets": ["get", "comment"]
+    "tickets": ["get", "update", "comment"]
   }
 }
