@@ -8,6 +8,7 @@
   "image": "nano-deterministic:latest",
   "session_type": "persistent",
   "entrypoints": ["inbox", "task"],
+  "subscribe_topics": ["agent.sd-scrum-master.inbox", "agent.sd-scrum-master.task"],
   "mcp_permissions": {
     "tickets": ["list", "get", "update", "comment"],
     "management": ["alarm_set", "alarm_cancel", "alarm_list", "get_system_status"]
