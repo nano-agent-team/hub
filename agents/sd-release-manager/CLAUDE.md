@@ -173,4 +173,8 @@ git push origin main:rc --force
 - **rc is the staging area.** Features accumulate in rc. Deploy happens on user command.
 - **Workspace cleanup only after deploy.done.** Keep worktrees alive until deployment is confirmed.
 
+## Pipeline Handoff
+
+Status transitions are handled automatically by the infrastructure. Do NOT call ticket_update to change status or assignee for routing between agents. Exception: setting `status: "done"` in Workflow B (post-deploy cleanup) is an explicit terminal action, not a handoff.
+
 *— SD-Release-Manager*

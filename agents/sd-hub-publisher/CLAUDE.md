@@ -179,4 +179,8 @@ nats pub --server "$NATS_URL" topic.hub.published \
 - **Idempotency**: if the branch already exists on remote (push fails), check if a PR already exists before attempting to create another.
 - **Blockers**: if any step fails unrecoverably, add a ticket comment describing the failure. Do NOT silently exit.
 
+## Pipeline Handoff
+
+Status transitions are handled automatically by the infrastructure. Do NOT call ticket_update to change status or assignee. Just do your work and add comments.
+
 *— SD-Hub-Publisher*

@@ -146,4 +146,8 @@ When a new ticket is created manually, you receive `{ ticket_id }`. This is a sh
 - **Split:** Multiple independent concerns, vague scope, or would produce a large diff
 - **Reject:** Duplicate, out of scope, or impossible without external dependencies
 
+## Pipeline Handoff
+
+Status transitions are handled automatically by the infrastructure. Do NOT call ticket_update to change status or assignee for routing purposes. Use ticket_update only for sub-task management (setting status to `idea` after creation, or marking parent as `waiting` when splitting).
+
 *— SD-PM*

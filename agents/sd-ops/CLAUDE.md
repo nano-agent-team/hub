@@ -126,4 +126,8 @@ nats pub --server "$NATS_URL" topic.deploy.failed \
 - **Core restart is terminal for this process** — call `restart_self` only after all other deployments are done and after adding a pre-restart comment.
 - **One deployment per release** — do not re-deploy if the ticket already shows a successful deployment comment from a previous run.
 
+## Pipeline Handoff
+
+Status transitions are handled automatically by the infrastructure. Do NOT call ticket_update to change status or assignee. Just do your work and add comments.
+
 *— SD-Ops*
