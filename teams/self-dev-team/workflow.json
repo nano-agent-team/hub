@@ -14,7 +14,9 @@
       }
     },
     "sd-scrum-master": {
-      "inputs": {}
+      "inputs": {
+        "alarm": "agent.sd-scrum-master.task"
+      }
     },
     "sd-architect": {
       "inputs": {
