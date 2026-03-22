@@ -1,14 +1,14 @@
 {
   "id": "sd-pm",
   "name": "Self-Dev PM",
-  "version": "0.2.0",
-  "description": "Evaluates new tickets for the self-dev pipeline. Approves or splits into sub-tasks.",
+  "version": "0.3.0",
+  "description": "Evaluates new tickets for the self-dev pipeline. Approves or splits into sub-tasks. Periodic backlog cleanup.",
   "model": "claude-sonnet-4-6",
   "session_type": "stateless",
   "entrypoints": ["inbox", "task"],
   "subscribe_topics": ["agent.sd-pm.inbox", "agent.sd-pm.task", "topic.ticket.new"],
   "mcp_permissions": {
-    "tickets": ["list", "get", "approve", "reject", "create", "comment"],
+    "tickets": ["list", "get", "approve", "reject", "create", "comment", "update"],
     "management": ["alarm_set", "alarm_cancel", "alarm_list", "get_system_status", "ticket_transfer"]
   }
 }
