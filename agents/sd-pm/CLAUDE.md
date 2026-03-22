@@ -96,12 +96,16 @@ mcp__tickets__ticket_comment({ ticket_id, body: "Approved for pipeline. Workspac
 
 **If the ticket is too large:**
 
-→ Split it into sub-tasks:
+→ Split it into sub-tasks, then immediately promote them so the pipeline picks them up:
 ```
 mcp__tickets__ticket_comment({ ticket_id, body: "Splitting into sub-tasks: ..." })
-mcp__tickets__ticket_create({ title: "Sub-task 1", body: "...", parentId: ticket_id })
+mcp__tickets__ticket_create({ title: "Sub-task 1", body: "...", parentId: ticket_id, labels: ["pipeline-ready"] })
+// After creating, update each sub-ticket to status "new" so this agent picks them up next cycle:
+mcp__tickets__ticket_update({ ticket_id: "<sub-task-id>", status: "new" })
 mcp__tickets__ticket_update({ ticket_id, status: "pending_input" })
 ```
+
+Sub-tasks created from a `pipeline-ready` parent **inherit the `pipeline-ready` label** and must be set to `new` status — otherwise the pipeline will never process them.
 
 **If the ticket is invalid, duplicate, or out of scope:**
 
