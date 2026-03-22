@@ -4,5 +4,5 @@
   "version": "0.2.0",
   "description": "Self-improvement pipeline with isolated workspaces and deployment. PM → Architect → Developer → Reviewer → Committer → Release Manager → Ops / Hub Publisher.",
   "required_secrets": [],
-  "agents": ["sd-pm", "sd-architect", "sd-developer", "sd-reviewer", "sd-committer", "sd-release-manager", "sd-ops", "sd-hub-publisher"]
+  "agents": ["sd-pm", "sd-scrum-master", "sd-architect", "sd-developer", "sd-reviewer", "sd-committer", "sd-release-manager", "sd-ops", "sd-hub-publisher"]
 }
