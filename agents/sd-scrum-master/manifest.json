@@ -2,13 +2,20 @@
   "id": "sd-scrum-master",
   "name": "Self-Dev Scrum Master",
   "version": "0.1.0",
-  "description": "Deterministic pipeline orchestrator. Polls tickets, claims work, dispatches agents, detects orphans.",
+  "description": "Deterministic pipeline orchestrator. Polls tickets, claims work, dispatches agents, detects orphans, forwards NATS events.",
   "kind": "deterministic",
   "handler": "scrum-master",
   "image": "nano-deterministic:latest",
   "session_type": "persistent",
   "entrypoints": ["inbox", "task"],
-  "subscribe_topics": ["agent.sd-scrum-master.inbox", "agent.sd-scrum-master.task"],
+  "subscribe_topics": [
+    "agent.sd-scrum-master.inbox",
+    "agent.sd-scrum-master.task",
+    "topic.release.ready",
+    "topic.hub.deploy",
+    "topic.deploy.failed",
+    "topic.hub.published"
+  ],
   "mcp_permissions": {
     "tickets": ["list", "get", "update", "comment"],
     "management": ["alarm_set", "alarm_cancel", "alarm_list", "get_system_status"]
@@ -20,5 +27,11 @@
     "sd-reviewer":        { "next": "sd-committer", "retry": "sd-developer" },
     "sd-committer":       { "next": "sd-release-manager" },
     "sd-release-manager": { "next": null }
+  },
+  "routes": {
+    "topic.release.ready":  "sd-ops",
+    "topic.hub.deploy":     "sd-hub-publisher",
+    "topic.deploy.failed":  "foreman",
+    "topic.hub.published":  "foreman"
   }
 }
