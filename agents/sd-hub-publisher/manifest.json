@@ -1,0 +1,13 @@
+{
+  "id": "sd-hub-publisher",
+  "name": "Self-Dev Hub Publisher",
+  "version": "0.1.0",
+  "model": "claude-sonnet-4-6",
+  "session_type": "stateless",
+  "entrypoints": ["inbox", "task"],
+  "publish_topics": ["topic.hub.published"],
+  "mcp_permissions": {
+    "management": ["workspace_create", "workspace_return", "workspace_get"],
+    "tickets": ["get", "comment"]
+  }
+}

@@ -110,3 +110,17 @@ nats pub topic.issue.report '{
 - If spec doesn't contain enough info → set `status: pending_input` + comment asking for clarification
 - Run tests before signaling done — do not skip this step
 - If tests fail after 3 iterations → comment with blocker details and set `status: blocked`
+
+## Superpowers
+
+You have access to structured development skills via the `Skill` tool. Use them at the right moment:
+
+| Skill | When to invoke |
+|-------|---------------|
+| `tdd` | Before writing any implementation code — design tests first |
+| `systematic-debugging` | When a test fails after 2+ attempts and you can't identify the root cause |
+| `executing-plans` | At the start of implementation, to follow the spec systematically |
+| `verification-before-completion` | Before publishing `topic.dev.done` — final quality check |
+| `receiving-code-review` | When you receive review feedback (topic.review.feedback) |
+
+Invoke a skill: use the `Skill` tool with the skill name (e.g., `skill: "tdd"`).

@@ -1,0 +1,69 @@
+{
+  "id": "self-dev-team",
+  "name": "Self-Dev Team",
+  "version": "0.3.0",
+  "description": "Scrum-master dispatches pipeline: PM → Architect → Developer → Reviewer → Committer → Release Manager → Ops / Hub Publisher. NATS bindings are kick signals only — scrum-master polls for reliability.",
+  "agents": ["sd-pm", "sd-scrum-master", "sd-architect", "sd-developer", "sd-reviewer", "sd-committer", "sd-release-manager", "sd-ops", "sd-hub-publisher", "foreman"],
+  "bindings": {
+    "sd-pm": {
+      "inputs": {
+        "ticket_new": { "from": "topic.ticket.new", "to": "task" }
+      },
+      "outputs": {
+        "ticket_waiting": "topic.ticket.waiting"
+      }
+    },
+    "sd-scrum-master": {
+      "inputs": {}
+    },
+    "sd-architect": {
+      "inputs": {
+        "ticket_waiting": { "from": "topic.ticket.waiting", "to": "task" }
+      }
+    },
+    "sd-developer": {
+      "inputs": {
+        "ticket_claimed": { "from": "topic.ticket.claimed", "to": "task" }
+      }
+    },
+    "sd-reviewer": {
+      "inputs": {
+        "ticket_claimed": { "from": "topic.ticket.claimed", "to": "task" }
+      }
+    },
+    "sd-committer": {
+      "inputs": {
+        "ticket_claimed": { "from": "topic.ticket.claimed", "to": "task" }
+      }
+    },
+    "sd-release-manager": {
+      "inputs": {
+        "ticket_claimed": { "from": "topic.ticket.claimed", "to": "task" }
+      }
+    },
+    "sd-ops": {
+      "inputs": {
+        "release_ready": { "from": "topic.release.ready", "to": "task" }
+      },
+      "outputs": {
+        "deploy_done": "topic.deploy.done",
+        "deploy_failed": "topic.deploy.failed",
+        "hub_deploy": "topic.hub.deploy"
+      }
+    },
+    "sd-hub-publisher": {
+      "inputs": {
+        "hub_deploy": { "from": "topic.hub.deploy", "to": "task" }
+      },
+      "outputs": {
+        "hub_published": "topic.hub.published"
+      }
+    },
+    "foreman": {
+      "inputs": {
+        "deploy_failed": { "from": "topic.deploy.failed", "to": "task" },
+        "hub_published": { "from": "topic.hub.published", "to": "task" }
+      }
+    }
+  }
+}

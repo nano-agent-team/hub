@@ -1,0 +1,14 @@
+{
+  "id": "sd-committer",
+  "name": "Self-Dev Committer",
+  "version": "0.1.0",
+  "description": "Commits reviewed changes locally in /workspace/repo. No push, no PR. Updates ticket to done.",
+  "model": "claude-haiku-4-5-20251001",
+  "session_type": "stateless",
+  "workspace_source": "ticket",
+  "entrypoints": ["inbox", "task"],
+  "publish_topics": ["topic.commit.done"],
+  "mcp_permissions": {
+    "tickets": ["get", "update", "comment"]
+  }
+}

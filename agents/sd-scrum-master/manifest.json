@@ -1,0 +1,15 @@
+{
+  "id": "sd-scrum-master",
+  "name": "Self-Dev Scrum Master",
+  "version": "0.1.0",
+  "description": "Deterministic pipeline orchestrator. Polls tickets, claims work, dispatches agents, detects orphans.",
+  "kind": "deterministic",
+  "handler": "scrum-master",
+  "image": "nano-deterministic:latest",
+  "session_type": "persistent",
+  "entrypoints": ["inbox", "task"],
+  "mcp_permissions": {
+    "tickets": ["list", "get", "update", "comment"],
+    "management": ["alarm_set", "alarm_cancel", "alarm_list", "get_system_status"]
+  }
+}

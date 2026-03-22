@@ -1,0 +1,27 @@
+{
+  "id": "sd-reviewer",
+  "name": "Self-Dev Reviewer",
+  "version": "0.1.0",
+  "description": "Reviews code changes in /workspace/repo. Passes or requests rework.",
+  "model": "claude-opus-4-6",
+  "session_type": "stateless",
+  "workspace_source": "ticket",
+  "entrypoints": [
+    "inbox",
+    "task"
+  ],
+  "publish_topics": [
+    "topic.review.passed",
+    "topic.dev.retry"
+  ],
+  "mcp_permissions": {
+    "tickets": [
+      "get",
+      "comment"
+    ]
+  },
+  "allowedTools": [
+    "Skill"
+  ],
+  "context_mode": true
+}

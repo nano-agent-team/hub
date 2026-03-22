@@ -6,7 +6,8 @@
   "model": "claude-sonnet-4-6",
   "session_type": "stateful",
   "entrypoints": [
-    "inbox"
+    "inbox",
+    "task"
   ],
   "publish_topics": [
     "topic.agent.create",
@@ -21,15 +22,25 @@
     ],
     "management": [
       "get_system_status",
+      "config_status",
+      "list_secrets",
+      "check_secrets",
+      "setup_complete",
       "fetch_hub",
       "list_hub_teams",
       "get_hub_team",
       "install_team",
+      "list_hub_agents",
       "install_agent",
+      "deploy_feature",
       "get_agent_definition",
       "start_agent",
       "stop_agent",
       "restart_mcp_server"
+    ],
+    "tickets": [
+      "create",
+      "list"
     ]
   }
 }
