@@ -21,7 +21,8 @@
     "management": ["alarm_set", "alarm_cancel", "alarm_list", "get_system_status"]
   },
   "pipeline": {
-    "sd-pm":              { "next": "sd-architect" },
+    "sd-pm":              { "next": "workspace-manager" },
+    "workspace-manager":  { "next": "sd-architect" },
     "sd-architect":       { "next": "sd-developer" },
     "sd-developer":       { "next": "sd-reviewer" },
     "sd-reviewer":        { "next": "sd-committer", "retry": "sd-developer" },
