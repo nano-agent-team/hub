@@ -1,61 +1,44 @@
 {
   "id": "self-dev-team",
   "name": "Self-Dev Team",
-  "version": "0.2.0",
-  "description": "PM → Architect → Developer → Reviewer → Committer → Release Manager → Ops (deploy) / Hub Publisher (PRs)",
-  "agents": ["sd-pm", "sd-architect", "sd-developer", "sd-reviewer", "sd-committer", "sd-release-manager", "sd-ops", "sd-hub-publisher", "foreman"],
+  "version": "0.3.0",
+  "description": "Scrum-master dispatches pipeline: PM → Architect → Developer → Reviewer → Committer → Release Manager → Ops / Hub Publisher. NATS bindings are kick signals only — scrum-master polls for reliability.",
+  "agents": ["sd-pm", "sd-scrum-master", "sd-architect", "sd-developer", "sd-reviewer", "sd-committer", "sd-release-manager", "sd-ops", "sd-hub-publisher", "foreman"],
   "bindings": {
     "sd-pm": {
       "inputs": {
         "ticket_new": { "from": "topic.ticket.new", "to": "task" }
       },
       "outputs": {
-        "ticket_approved": "topic.ticket.approved"
+        "ticket_waiting": "topic.ticket.waiting"
       }
+    },
+    "sd-scrum-master": {
+      "inputs": {}
     },
     "sd-architect": {
       "inputs": {
-        "ticket_approved": { "from": "topic.ticket.approved", "to": "task" }
-      },
-      "outputs": {
-        "spec_ready": "topic.ticket.spec-ready"
+        "ticket_waiting": { "from": "topic.ticket.waiting", "to": "task" }
       }
     },
     "sd-developer": {
       "inputs": {
-        "spec_ready": { "from": "topic.ticket.spec-ready", "to": "task" },
-        "dev_retry": { "from": "topic.dev.retry", "to": "task" },
-        "merge_conflict": { "from": "topic.merge.conflict", "to": "task" }
-      },
-      "outputs": {
-        "dev_done": "topic.dev.done"
+        "ticket_claimed": { "from": "topic.ticket.claimed", "to": "task" }
       }
     },
     "sd-reviewer": {
       "inputs": {
-        "dev_done": { "from": "topic.dev.done", "to": "task" }
-      },
-      "outputs": {
-        "review_passed": "topic.review.passed",
-        "dev_retry": "topic.dev.retry"
+        "ticket_claimed": { "from": "topic.ticket.claimed", "to": "task" }
       }
     },
     "sd-committer": {
       "inputs": {
-        "review_passed": { "from": "topic.review.passed", "to": "task" }
-      },
-      "outputs": {
-        "commit_done": "topic.commit.done"
+        "ticket_claimed": { "from": "topic.ticket.claimed", "to": "task" }
       }
     },
     "sd-release-manager": {
       "inputs": {
-        "commit_done": { "from": "topic.commit.done", "to": "task" },
-        "deploy_done": { "from": "topic.deploy.done", "to": "task" }
-      },
-      "outputs": {
-        "release_ready": "topic.release.ready",
-        "merge_conflict": "topic.merge.conflict"
+        "ticket_claimed": { "from": "topic.ticket.claimed", "to": "task" }
       }
     },
     "sd-ops": {
