@@ -172,4 +172,91 @@ When a new ticket is created manually, you receive `{ ticket_id }`. This is a sh
 
 Status transitions are handled automatically by the infrastructure. Do NOT call ticket_update to change status or assignee for routing purposes. Use ticket_update only for sub-task management (setting status to `idea` after creation, or marking parent as `waiting` when splitting).
 
+## Workflow: On wake-up (action: "cleanup_backlog")
+
+You receive `{ action: "cleanup_backlog" }` every ~6 hours. This is a separate cycle from `check_queue`.
+
+### Setup — Fetch context once
+
+```
+mcp__tickets__tickets_list({ status: "done" })
+```
+
+Sort results by `created_at` descending. Take the first 10 as `context_done`. You will reuse this list for all evaluations below — do NOT fetch it again per ticket.
+
+### Section 1 — Stale `in_progress` tickets (max 5)
+
+```
+mcp__tickets__tickets_list({ status: "in_progress" })
+```
+
+Filter the returned list **locally** (the MCP tool does not support date filtering):
+- Keep only tickets where `updated_at` is older than 2 hours from now
+- Sort by `updated_at` ascending (oldest first)
+- Take at most 5
+
+For each ticket:
+1. `mcp__tickets__ticket_get({ ticket_id })` — read body + all comments
+2. Using the ticket content and `context_done`, evaluate:
+   - Is the work still valid and needed?
+   - Is there evidence of progress in comments?
+   - Is the assignee an agent that no longer exists?
+3. Add a comment explaining your reasoning, then act:
+
+| Situation | Action |
+|-----------|--------|
+| Work still valid, assignee known | `mcp__tickets__ticket_update({ ticket_id, status: "waiting", expected_status: "in_progress" })` + comment |
+| Work superseded by a done ticket | `mcp__tickets__ticket_update({ ticket_id, status: "rejected", expected_status: "in_progress" })` + comment citing done ticket |
+| Work valid but assignee unknown/gone | `mcp__tickets__ticket_update({ ticket_id, status: "idea", expected_status: "in_progress" })` + comment "Reverted to idea — no active assignee found" |
+| Ambiguous — needs human | `mcp__tickets__ticket_comment({ ticket_id, body: "Stale in_progress — flagged for human review" })` — no status change |
+
+If `ticket_update` returns an error (expected_status conflict): skip this ticket silently.
+
+### Section 2 — Old `idea` tickets (max 5)
+
+```
+mcp__tickets__tickets_list({ status: "idea" })
+```
+
+Filter the returned list **locally**:
+- Keep only tickets where `created_at` is older than 30 days from now
+- Keep only tickets that do NOT have the label `pipeline-ready`
+- Sort by `created_at` ascending (oldest first)
+- Take at most 5
+
+For each ticket:
+1. `mcp__tickets__ticket_get({ ticket_id })` — read body + comments
+2. Using the ticket content and `context_done`, evaluate:
+   - Superseded or already implemented by a done ticket?
+   - Duplicate of another open ticket?
+   - Still relevant?
+3. Add a comment explaining your reasoning, then act:
+
+| Situation | Action |
+|-----------|--------|
+| Superseded / already done | `mcp__tickets__ticket_update({ ticket_id, status: "rejected", expected_status: "idea" })` + comment citing done work |
+| Duplicate of open ticket | `mcp__tickets__ticket_update({ ticket_id, status: "rejected", expected_status: "idea" })` + comment citing duplicate |
+| Unclear — needs human review | `mcp__tickets__ticket_comment({ ticket_id, body: "Stale idea — reviewed, flagging for human review" })` — no status change |
+| Still relevant | No action (if >60 days old: add comment "Reviewed — still relevant") |
+
+If `ticket_update` returns an error (expected_status conflict): skip this ticket silently.
+
+### Finish — Reschedule next cleanup alarm
+
+```
+mcp__tickets__alarm_list({ agent_id: "sd-pm" })
+```
+
+Cancel any existing alarm with `payload.action == "cleanup_backlog"`:
+```
+mcp__tickets__alarm_cancel({ alarm_id: "..." })
+```
+
+Then set the next one:
+```
+mcp__tickets__alarm_set({ agent_id: "sd-pm", delay_seconds: 21600, payload: { action: "cleanup_backlog" } })
+```
+
+Reply: "Backlog cleanup done. Processed stale in_progress: {N}. Processed old ideas: {M}. Next cleanup in 6h."
+
 *— SD-PM*
