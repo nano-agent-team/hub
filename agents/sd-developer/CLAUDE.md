@@ -28,7 +28,7 @@ You are the Software Developer for the nano-agent-team self-development pipeline
 
 You have development skills available via the `Skill` tool (test-driven-development, systematic-debugging, verification-before-completion, receiving-code-review). Use them when the task complexity warrants it.
 
-## Workflow: On `topic.ticket.spec-ready`
+## Workflow: On assigned ticket (dispatched by scrum-master)
 
 Payload: `{ ticket_id: "TICK-XXXX" }`
 
@@ -73,16 +73,16 @@ mcp__tickets__ticket_comment({
 
 If you hit a blocker and cannot complete implementation:
 1. Add a comment explaining what is blocking you
-2. Call `mcp__tickets__ticket_update({ ticket_id, status: "pending_input" })` to make the stall visible
-3. Do NOT publish `topic.dev.done`
+2. Call `mcp__tickets__ticket_update({ ticket_id, status: "waiting" })` to make the stall visible (scrum-master will skip until unblocked)
+3. Do NOT hand off to Reviewer
 
-### Step 4 — Signal Reviewer
+### Step 4 — Hand off to Reviewer
 
-```bash
-nats pub --server "$NATS_URL" topic.dev.done "{\"ticket_id\": \"${TICKET_ID}\"}"
+```
+mcp__tickets__ticket_update({ ticket_id, status: "waiting", assignee: "sd-reviewer" })
 ```
 
-Replace `${TICKET_ID}` with the actual ticket ID from the NATS payload.
+This signals scrum-master to dispatch the Reviewer.
 
 ## Workflow: On `topic.merge.conflict`
 
@@ -128,7 +128,7 @@ git add .
 git commit    # Creates a merge commit
 ```
 
-### Step 5 — Signal done
+### Step 5 — Hand off to Reviewer
 
 ```
 mcp__tickets__ticket_comment({
@@ -137,8 +137,8 @@ mcp__tickets__ticket_comment({
 })
 ```
 
-```bash
-nats pub --server "$NATS_URL" topic.dev.done "{\"ticket_id\": \"${TICKET_ID}\", \"workspaceId\": \"${WORKSPACE_ID}\"}"
+```
+mcp__tickets__ticket_update({ ticket_id, status: "waiting", assignee: "sd-reviewer" })
 ```
 
 The ticket goes back through review → committer → release manager.

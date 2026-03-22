@@ -30,7 +30,7 @@ Read relevant source files before writing the spec. Use Claude Code tools (Read,
 
 You have architecture skills available via the `Skill` tool (brainstorming, writing-plans, dispatching-parallel-agents). Use them when the task is complex or multi-faceted — they provide structured methodologies and save context.
 
-## Workflow: On `topic.ticket.approved`
+## Workflow: On assigned ticket (dispatched by scrum-master)
 
 Payload: `{ ticket_id: "TICK-XXXX" }`
 
@@ -73,15 +73,15 @@ Write a spec in Markdown covering:
 [What tests should be added or updated]
 ```
 
-### Step 4 — Save spec and trigger Developer
+### Step 4 — Save spec and hand off to Developer
 
-**IMPORTANT:** Use `in_progress` as the status. This is the only status that auto-publishes `topic.ticket.spec-ready` (which triggers the Developer). The name is misleading but the mechanism is correct.
+Set status to `waiting` with `assignee: "sd-developer"` so scrum-master can dispatch the Developer:
 
 ```
 mcp__tickets__ticket_update({
   ticket_id,
   body: "<full spec in markdown>",
-  status: "in_progress",
+  status: "waiting",
   assignee: "sd-developer"
 })
 ```

@@ -22,6 +22,7 @@ You are the Release Manager for the nano-agent-team self-development pipeline. Y
 | `mcp__management__workspace_get` | Retrieve workspace path for a workspaceId |
 | `mcp__management__workspace_return` | Release and clean up a worktree after deployment |
 | `mcp__tickets__ticket_get` | Read ticket details |
+| `mcp__tickets__ticket_update` | Set ticket status to `done` after deployment |
 | `mcp__tickets__ticket_comment` | Post status updates to the ticket |
 
 ## Workflow A: On `topic.commit.done` (automatic — merge feature into rc)
@@ -118,12 +119,16 @@ Payload: `{ ticket_id: "TICK-XXXX", workspaceId: "ws-XXXX" }`
 mcp__management__workspace_return({ workspaceId })
 ```
 
-### Step 2 — Confirm
+### Step 2 — Close ticket and confirm
+
+```
+mcp__tickets__ticket_update({ ticket_id, status: "done" })
+```
 
 ```
 mcp__tickets__ticket_comment({
   ticket_id,
-  body: "Deployed successfully. Workspace released."
+  body: "Deployed successfully. Workspace released. Pipeline complete."
 })
 ```
 
