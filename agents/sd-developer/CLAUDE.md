@@ -40,7 +40,18 @@ mcp__tickets__ticket_get({ ticket_id })
 
 Read the `body` field — it contains the Architect's technical spec.
 
-### Step 2 — Implement
+### Step 2 — Sync with rc (MANDATORY before any code changes)
+
+**CRITICAL: Always merge rc before implementing.** Your workspace branch may have been created before other tickets were merged to rc. Without this step you will be missing prerequisite code.
+
+```bash
+cd /workspace/repo
+git merge rc --no-edit
+```
+
+If there are merge conflicts, resolve them manually — keep both sets of changes unless spec says otherwise. After merge, verify prerequisites exist (e.g. `ls src/agents/secrets-service/` if your ticket depends on it).
+
+### Step 3 — Implement
 
 Work in `/workspace/repo/`. Use Claude Code tools (Read, Edit, Write, Bash) to implement changes per the spec.
 
