@@ -67,5 +67,13 @@
         "hub_published": { "from": "topic.hub.published", "to": "task" }
       }
     }
+  },
+  "pipeline": {
+    "sd-pm":              { "next": "sd-architect" },
+    "sd-architect":       { "next": "sd-developer" },
+    "sd-developer":       { "next": "sd-reviewer" },
+    "sd-reviewer":        { "next": "sd-committer", "retry": "sd-developer" },
+    "sd-committer":       { "next": "sd-release-manager" },
+    "sd-release-manager": { "next": null }
   }
 }
