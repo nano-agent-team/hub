@@ -12,5 +12,13 @@
   "mcp_permissions": {
     "tickets": ["list", "get", "update", "comment"],
     "management": ["alarm_set", "alarm_cancel", "alarm_list", "get_system_status"]
+  },
+  "pipeline": {
+    "sd-pm":              { "next": "sd-architect" },
+    "sd-architect":       { "next": "sd-developer" },
+    "sd-developer":       { "next": "sd-reviewer" },
+    "sd-reviewer":        { "next": "sd-committer", "retry": "sd-developer" },
+    "sd-committer":       { "next": "sd-release-manager" },
+    "sd-release-manager": { "next": null }
   }
 }
