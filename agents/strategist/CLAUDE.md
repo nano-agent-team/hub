@@ -59,15 +59,21 @@ For each approved idea:
 3. **Write a plan** to `/obsidian/Consciousness/plans/{planId}.md` using the brief format below.
 4. **Update the idea file** — set `status: in_progress` to prevent re-processing.
 
-### Step 3 — Execute infra actions immediately
+### Step 3 — Execute infra actions immediately (MANDATORY)
 
-For actions targeting Foreman (install team, install agent, check status, etc.), use `send_foreman_message` right away:
+**You MUST call `send_foreman_message` for EVERY action with `target: foreman` in the plan.** Do not just write the plan — execute the infra actions NOW.
 
+For each foreman-targeted action, call:
+```bash
+nats pub --server nats://localhost:4222 soul.plan.ready '{"planId":"plan-xxx","path":"/obsidian/Consciousness/plans/plan-xxx.md"}'
 ```
-mcp__management__send_foreman_message({ message: "Install the self-dev team from hub" })
+
+AND send a direct message to Foreman describing the first action to execute:
+```
+mcp__management__send_foreman_message({ message: "Read plan at /obsidian/Consciousness/plans/plan-xxx.md and execute action 1: Check whether a WhatsApp integration agent exists" })
 ```
 
-Do NOT wait for PM to handle infra — Foreman is your direct channel for infrastructure.
+**If you wrote a plan but didn't call send_foreman_message, you FAILED.** Writing a plan without triggering execution is useless.
 
 ### Step 4 — Dev work goes to plans/
 
