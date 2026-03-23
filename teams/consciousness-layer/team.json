@@ -1,0 +1,7 @@
+{
+  "id": "consciousness-layer",
+  "name": "Consciousness Layer",
+  "version": "0.1.0",
+  "description": "Strategic agent layer — consciousness, conscience, strategist. Base agents always present at system startup.",
+  "agents": ["consciousness", "conscience", "strategist"]
+}

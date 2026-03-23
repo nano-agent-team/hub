@@ -1,0 +1,39 @@
+{
+  "id": "consciousness-layer",
+  "name": "Consciousness Layer",
+  "version": "0.1.0",
+  "description": "Strategic agent layer — consciousness, conscience, strategist. Base agents always present at system startup.",
+  "agents": [
+    "consciousness",
+    "conscience",
+    "strategist"
+  ],
+  "bindings": {
+    "conscience": {
+      "inputs": {
+        "idea_pending": { "from": "soul.idea.pending", "to": "task" }
+      },
+      "outputs": {
+        "idea_approved": "soul.idea.approved",
+        "idea_rejected": "soul.idea.rejected"
+      }
+    },
+    "strategist": {
+      "inputs": {
+        "idea_approved": { "from": "soul.idea.approved", "to": "task" }
+      },
+      "outputs": {
+        "plan_ready": "soul.plan.ready"
+      }
+    },
+    "consciousness": {
+      "inputs": {
+        "idea_rejected": { "from": "soul.idea.rejected", "to": "task" },
+        "user_message": { "from": "user.message.inbound", "to": "task" }
+      },
+      "outputs": {
+        "idea_pending": "soul.idea.pending"
+      }
+    }
+  }
+}

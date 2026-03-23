@@ -1,0 +1,12 @@
+{
+  "id": "conscience",
+  "name": "Conscience",
+  "version": "0.1.0",
+  "description": "Ephemeral ethics gate — evaluates ideas against PRINCIPLES.md and values.md",
+  "workspace_source": "soul",
+  "subscribe_topics": [
+    "soul.idea.pending"
+  ],
+  "mcp_permissions": {},
+  "obsidian_mount": true
+}

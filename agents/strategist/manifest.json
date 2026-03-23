@@ -1,0 +1,19 @@
+{
+  "id": "strategist",
+  "name": "Strategist",
+  "version": "0.1.0",
+  "description": "Tactical planner — decomposes approved ideas into actionable briefs",
+  "session_type": "stateful",
+  "subscribe_topics": [
+    "agent.strategist.inbox",
+    "agent.strategist.task",
+    "soul.idea.approved"
+  ],
+  "publish_topics": [
+    "soul.plan.ready"
+  ],
+  "mcp_permissions": {
+    "management": true
+  },
+  "obsidian_mount": true
+}

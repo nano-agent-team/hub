@@ -9,7 +9,7 @@
     "inbox",
     "task"
   ],
-  "subscribe_topics": ["agent.foreman.inbox", "agent.foreman.task"],
+  "subscribe_topics": ["agent.foreman.inbox", "agent.foreman.task", "soul.plan.ready"],
   "publish_topics": [
     "topic.agent.create",
     "topic.team.ready"
@@ -38,10 +38,6 @@
       "start_agent",
       "stop_agent",
       "restart_mcp_server"
-    ],
-    "tickets": [
-      "create",
-      "list"
     ]
   }
 }
