@@ -3,6 +3,7 @@
   "name": "Consciousness",
   "version": "0.1.0",
   "description": "Strategic brain — user chat, goal decomposition, idea generation, periodic reflection",
+  "model": "claude-sonnet-4-6",
   "session_type": "stateful",
   "subscribe_topics": [
     "agent.consciousness.inbox",
