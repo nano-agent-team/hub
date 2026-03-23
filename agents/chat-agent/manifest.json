@@ -1,0 +1,15 @@
+{
+  "id": "chat-agent",
+  "name": "Chat Agent",
+  "version": "0.1.0",
+  "description": "User-facing communication — adapts to user style, relays intents to consciousness, delivers ask_user questions",
+  "model": "claude-sonnet-4-6",
+  "session_type": "stateful",
+  "subscribe_topics": [
+    "agent.chat-agent.inbox",
+    "agent.chat-agent.task"
+  ],
+  "mcp_permissions": {
+    "soul": ["send_to_consciousness", "answer_question", "journal_log"]
+  }
+}

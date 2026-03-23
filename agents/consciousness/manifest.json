@@ -1,21 +1,18 @@
 {
   "id": "consciousness",
   "name": "Consciousness",
-  "version": "0.1.0",
-  "description": "Strategic brain — user chat, goal decomposition, idea generation, periodic reflection",
+  "version": "0.2.0",
+  "description": "Strategic brain — goal decomposition, idea generation, periodic reflection",
   "model": "claude-sonnet-4-6",
   "session_type": "stateful",
   "subscribe_topics": [
     "agent.consciousness.inbox",
     "agent.consciousness.task",
-    "soul.idea.rejected",
-    "user.message.inbound"
-  ],
-  "publish_topics": [
-    "soul.idea.pending",
-    "user.message.outbound"
+    "soul.consciousness.inbox",
+    "soul.idea.rejected"
   ],
   "mcp_permissions": {
+    "soul": ["create_goal", "create_idea", "journal_log"],
     "management": true
   },
   "obsidian_mount": true
