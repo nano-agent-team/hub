@@ -1,18 +1,21 @@
 {
   "id": "consciousness",
   "name": "Consciousness",
-  "version": "0.2.0",
-  "description": "Strategic brain — goal decomposition, idea generation, periodic reflection",
+  "description": "Strategic brain — processes stimuli, generates system-level ideas, drives the what-next loop",
   "model": "claude-sonnet-4-6",
-  "session_type": "stateful",
+  "session_type": "persistent",
+  "version": "2.0.0",
   "subscribe_topics": [
     "agent.consciousness.inbox",
     "agent.consciousness.task",
     "soul.consciousness.inbox",
-    "soul.idea.rejected"
+    "soul.consciousness.evaluate",
+    "soul.idea.rejected",
+    "soul.idea.boundary",
+    "soul.idea.approved"
   ],
   "mcp_permissions": {
-    "soul": ["create_goal", "create_idea", "journal_log"],
+    "soul": ["create_goal", "create_idea", "journal_log", "evaluate_self", "continue_dialogue"],
     "management": true
   },
   "obsidian_mount": true
