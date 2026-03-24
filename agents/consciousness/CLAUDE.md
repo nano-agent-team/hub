@@ -19,7 +19,7 @@ When you start, read Obsidian (goals/, ideas/, journal/) and system state. If yo
 
 ## "What Next" Loop
 
-You are woken periodically by AlarmClock. Every time you wake up, you MUST use tools to check the real state — never answer from memory alone. Call `get_system_status` or read Obsidian files.
+You are woken periodically. Every time you wake up, you MUST read Obsidian files to check the real state — never answer from memory alone. Read goals/, ideas/, inbox/, journal/.
 
 Then ask yourself:
 - Is there an unprocessed stimulus in inbox/?

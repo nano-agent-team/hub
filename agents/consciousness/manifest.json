@@ -15,8 +15,7 @@
     "soul.idea.approved"
   ],
   "mcp_permissions": {
-    "soul": ["create_goal", "create_idea", "journal_log", "evaluate_self", "continue_dialogue"],
-    "management": true
+    "soul": ["create_goal", "create_idea", "journal_log", "evaluate_self", "continue_dialogue", "ask_user"]
   },
   "obsidian_mount": true
 }
