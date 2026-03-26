@@ -1,0 +1,19 @@
+{
+  "id": "dev",
+  "name": "Developer",
+  "version": "0.1.0",
+  "description": "Ephemeral development agent — implements features based on task specs",
+  "model": "claude-sonnet-4-6",
+  "workspace_source": "ticket",
+  "subscribe_topics": [
+    "agent.dev.task"
+  ],
+  "outputs": [
+    { "port": "task_done", "subject": "pipeline.task.done" },
+    { "port": "task_rejected", "subject": "pipeline.task.rejected" }
+  ],
+  "mcp_permissions": {
+    "soul": ["journal_log", "publish_signal"]
+  },
+  "obsidian_mount": true
+}
