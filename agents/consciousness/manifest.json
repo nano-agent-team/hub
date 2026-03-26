@@ -14,8 +14,15 @@
     "soul.idea.boundary",
     "soul.idea.approved"
   ],
+  "outputs": [
+    { "port": "new_idea", "subject": "soul.idea.pending" },
+    { "port": "ask_user", "subject": "soul.ask_user" },
+    { "port": "self_evaluate", "subject": "soul.consciousness.evaluate" },
+    { "port": "counter_argue", "subject": "soul.conscience.dialogue" },
+    { "port": "noop", "subject": "soul.consciousness.noop" }
+  ],
   "mcp_permissions": {
-    "soul": ["create_goal", "create_idea", "journal_log", "evaluate_self", "continue_dialogue", "ask_user"]
+    "soul": ["create_goal", "create_idea", "journal_log", "evaluate_self", "continue_dialogue", "ask_user", "publish_signal"]
   },
   "obsidian_mount": true
 }

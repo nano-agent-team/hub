@@ -11,8 +11,13 @@
     "soul.idea.pending",
     "soul.conscience.dialogue"
   ],
+  "outputs": [
+    { "port": "idea_approved", "subject": "soul.idea.approved" },
+    { "port": "idea_rejected", "subject": "soul.idea.rejected" },
+    { "port": "idea_boundary", "subject": "soul.idea.boundary" }
+  ],
   "mcp_permissions": {
-    "soul": ["update_idea", "journal_log"]
+    "soul": ["update_idea", "journal_log", "publish_signal"]
   },
   "obsidian_mount": true
 }

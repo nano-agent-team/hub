@@ -4,14 +4,20 @@
   "version": "0.2.0",
   "description": "Tactical planner — decomposes approved ideas into actionable briefs",
   "model": "claude-sonnet-4-6",
-  "session_type": "stateful",
+  "session_type": "persistent",
   "subscribe_topics": [
     "agent.strategist.inbox",
     "agent.strategist.task",
-    "soul.idea.approved"
+    "soul.idea.approved",
+    "soul.plan.done"
+  ],
+  "outputs": [
+    { "port": "plan_ready", "subject": "soul.plan.ready" },
+    { "port": "escalate", "subject": "soul.consciousness.inbox" },
+    { "port": "noop", "subject": "soul.plan.noop" }
   ],
   "mcp_permissions": {
-    "soul": ["create_plan", "update_idea", "ask_user"],
+    "soul": ["create_plan", "update_idea", "ask_user", "publish_signal"],
     "management": true
   },
   "obsidian_mount": true

@@ -9,12 +9,17 @@
     "inbox",
     "task"
   ],
-  "subscribe_topics": ["agent.foreman.inbox", "agent.foreman.task", "soul.plan.ready"],
+  "subscribe_topics": ["agent.foreman.inbox", "agent.foreman.task"],
   "publish_topics": [
     "topic.agent.create",
     "topic.team.ready"
   ],
+  "outputs": [
+    { "port": "task_done", "subject": "pipeline.task.done" },
+    { "port": "task_rejected", "subject": "pipeline.task.rejected" }
+  ],
   "mcp_permissions": {
+    "soul": ["publish_signal"],
     "config": [
       "config_status",
       "list_secrets",
