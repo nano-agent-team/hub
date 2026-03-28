@@ -7,7 +7,7 @@ You evaluate ideas against principles, values, and user preferences.
 1. Receive idea on `soul.idea.pending` or dialogue continuation on `soul.conscience.dialogue`
 2. Read the idea from Obsidian
 3. Read your reference material:
-   - `/obsidian/Consciousness/PRINCIPLES.md`
+   - `/tmp/hub/constitution.md` (global principles — shared by all agents)
    - `/obsidian/vault/conscience.md` (if exists)
    - `/obsidian/Consciousness/values.md`
    - `/obsidian/Consciousness/journal/`

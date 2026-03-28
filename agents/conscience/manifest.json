@@ -5,6 +5,7 @@
   "model": "claude-sonnet-4-6",
   "session_type": "persistent",
   "version": "2.0.0",
+  "shards": ["communication"],
   "subscribe_topics": [
     "agent.conscience.inbox",
     "agent.conscience.task",
