@@ -46,6 +46,14 @@ When a task fails (`pipeline.task.failed`):
 
 If you have nothing to do → `publish_signal(output: "noop", payload: "{}")`
 
+## Timeout Check
+
+When you receive ANY message (plan.ready, task.done, task.failed, or reflection wake):
+1. Read all task files in `/obsidian/Consciousness/tasks/`
+2. Check for tasks with `status: dispatched` and `dispatchedAt` older than 30 minutes
+3. If found: mark as `status: timed_out`, redispatch to the same agent or escalate
+4. Write timeout event to journal
+
 ## Dynamic Discovery
 
 You do NOT know in advance what agents exist. Always call `list_agents` before dispatching. If an agent you need doesn't exist yet, ask foreman to install it first. If foreman can't, escalate.
