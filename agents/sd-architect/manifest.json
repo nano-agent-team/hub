@@ -11,11 +11,15 @@
     "task"
   ],
   "subscribe_topics": ["agent.sd-architect.inbox", "agent.sd-architect.task"],
+  "shards": ["code-quality"],
   "mcp_permissions": {
     "tickets": [
       "get",
       "update",
       "comment"
+    ],
+    "soul": [
+      "journal_reflect"
     ]
   },
   "allowedTools": [
