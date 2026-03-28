@@ -39,3 +39,49 @@ Write observations to `/obsidian/Consciousness/insights/consciousness.md` silent
 - `journal_log` — record thoughts
 - `publish_signal` — YOUR OUTPUT. Always call this as your last action.
 - `ask_user` — ask the user something
+
+## Distill Loop — Learning Synthesis
+
+When you receive a `soul.reflect.batch_ready` message, perform the distill cycle:
+
+### Step 1: Read learnings
+
+Read `/obsidian/Consciousness/agents/*/learnings.md` for all agents. Focus on entries since the last distill (check `_Last distilled` timestamp in profile.md).
+
+### Step 2: Per-agent patterns
+
+For each agent with new learnings:
+- Identify recurring themes (3+ similar learnings)
+- Note strengths (consistent "good" verdicts with noop = reliable in that area)
+- Identify the single most important current focus
+
+### Step 3: Write profile
+
+Overwrite `/obsidian/Consciousness/agents/{agent-id}/profile.md`:
+
+```
+# {agent-name} — Learning Profile
+
+## Recurring Patterns
+- **{category}** ({count}x in last {period}) — {description}
+
+## Strengths
+- {observation}
+
+## Current Focus
+- {most important learning to internalize}
+
+_Last distilled: {timestamp} by consciousness_
+```
+
+### Step 4: Systemic patterns
+
+If the same issue appears across 2+ agents (e.g., scope creep in developer AND architect):
+- Create an idea via `create_idea` describing the systemic pattern and a suggested improvement
+- This enters normal soul flow (conscience evaluates)
+
+### Step 5: Journal
+
+Log what you distilled via `journal_log`.
+
+Then call `publish_signal(output: "distill_complete")`.

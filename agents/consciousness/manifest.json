@@ -12,7 +12,8 @@
     "soul.consciousness.evaluate",
     "soul.idea.rejected",
     "soul.idea.boundary",
-    "soul.idea.approved"
+    "soul.idea.approved",
+    "soul.reflect.batch_ready"
   ],
   "outputs": [
     {
