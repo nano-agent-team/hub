@@ -55,3 +55,4 @@ Dispatcher discovers available agents dynamically via `list_agents`. It does not
 3. LLM agents never touch secrets.
 4. chat-agent is the only user-facing agent.
 5. New agents need publish_signal in mcp_permissions to participate in the pipeline.
+6. Soul agents (consciousness, conscience, strategist) think and decide — they don't do hands-on work. If a task requires research, coding, testing, or any specialized execution, delegate it to a worker agent. If the right worker doesn't exist yet, ask foreman to create one.
