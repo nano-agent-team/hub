@@ -9,11 +9,21 @@
     "agent.dev.task"
   ],
   "outputs": [
-    { "port": "task_done", "subject": "pipeline.task.done" },
-    { "port": "task_rejected", "subject": "pipeline.task.rejected" }
+    {
+      "port": "task_done",
+      "subject": "pipeline.task.done"
+    },
+    {
+      "port": "task_rejected",
+      "subject": "pipeline.task.rejected"
+    }
   ],
   "mcp_permissions": {
-    "soul": ["journal_log", "publish_signal"]
+    "soul": [
+      "journal_log",
+      "publish_signal"
+    ]
   },
-  "obsidian_mount": true
+  "obsidian_mount": true,
+  "icon": "💻"
 }

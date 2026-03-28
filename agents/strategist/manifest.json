@@ -12,13 +12,29 @@
     "soul.plan.done"
   ],
   "outputs": [
-    { "port": "plan_ready", "subject": "soul.plan.ready" },
-    { "port": "escalate", "subject": "soul.consciousness.inbox" },
-    { "port": "noop", "subject": "soul.plan.noop" }
+    {
+      "port": "plan_ready",
+      "subject": "soul.plan.ready"
+    },
+    {
+      "port": "escalate",
+      "subject": "soul.consciousness.inbox"
+    },
+    {
+      "port": "noop",
+      "subject": "soul.plan.noop"
+    }
   ],
   "mcp_permissions": {
-    "soul": ["create_plan", "update_idea", "ask_user", "publish_signal"],
+    "tickets": [],
+    "soul": [
+      "create_plan",
+      "update_idea",
+      "ask_user",
+      "publish_signal"
+    ],
     "management": true
   },
-  "obsidian_mount": true
+  "obsidian_mount": true,
+  "icon": "📐"
 }

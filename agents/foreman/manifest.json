@@ -9,17 +9,29 @@
     "inbox",
     "task"
   ],
-  "subscribe_topics": ["agent.foreman.inbox", "agent.foreman.task"],
+  "subscribe_topics": [
+    "agent.foreman.inbox",
+    "agent.foreman.task"
+  ],
   "publish_topics": [
     "topic.agent.create",
     "topic.team.ready"
   ],
   "outputs": [
-    { "port": "task_done", "subject": "pipeline.task.done" },
-    { "port": "task_rejected", "subject": "pipeline.task.rejected" }
+    {
+      "port": "task_done",
+      "subject": "pipeline.task.done"
+    },
+    {
+      "port": "task_rejected",
+      "subject": "pipeline.task.rejected"
+    }
   ],
   "mcp_permissions": {
-    "soul": ["publish_signal"],
+    "tickets": [],
+    "soul": [
+      "publish_signal"
+    ],
     "config": [
       "config_status",
       "list_secrets",
@@ -44,5 +56,6 @@
       "stop_agent",
       "restart_mcp_server"
     ]
-  }
+  },
+  "icon": "🔧"
 }
