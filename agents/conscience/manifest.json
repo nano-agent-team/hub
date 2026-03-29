@@ -5,7 +5,10 @@
   "model": "claude-sonnet-4-6",
   "session_type": "persistent",
   "version": "2.0.0",
-  "shards": ["communication"],
+  "shards": [
+    "communication",
+    "architecture"
+  ],
   "subscribe_topics": [
     "agent.conscience.inbox",
     "agent.conscience.task",
@@ -31,7 +34,8 @@
     "soul": [
       "update_idea",
       "journal_log",
-      "publish_signal"
+      "publish_signal",
+      "journal_reflect"
     ]
   },
   "obsidian_mount": true,

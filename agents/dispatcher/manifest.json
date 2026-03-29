@@ -40,9 +40,13 @@
       "ask_user",
       "publish_signal",
       "dispatch_task",
-      "list_agents"
+      "list_agents",
+      "journal_reflect"
     ]
   },
   "obsidian_mount": true,
-  "icon": "📡"
+  "icon": "📡",
+  "shards": [
+    "architecture"
+  ]
 }

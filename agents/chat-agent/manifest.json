@@ -17,5 +17,8 @@
       "journal_log"
     ]
   },
-  "icon": "💬"
+  "icon": "💬",
+  "shards": [
+    "architecture"
+  ]
 }

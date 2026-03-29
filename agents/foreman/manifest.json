@@ -30,7 +30,8 @@
   "mcp_permissions": {
     "tickets": [],
     "soul": [
-      "publish_signal"
+      "publish_signal",
+      "journal_reflect"
     ],
     "config": [
       "config_status",
@@ -57,5 +58,8 @@
       "restart_mcp_server"
     ]
   },
-  "icon": "🔧"
+  "icon": "🔧",
+  "shards": [
+    "architecture"
+  ]
 }

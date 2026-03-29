@@ -31,10 +31,14 @@
       "create_plan",
       "update_idea",
       "ask_user",
-      "publish_signal"
+      "publish_signal",
+      "journal_reflect"
     ],
     "management": true
   },
   "obsidian_mount": true,
-  "icon": "📐"
+  "icon": "📐",
+  "shards": [
+    "architecture"
+  ]
 }

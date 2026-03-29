@@ -10,6 +10,7 @@
   "publish_topics": ["topic.release.ready", "topic.merge.conflict"],
   "mcp_permissions": {
     "management": ["workspace_get", "workspace_return"],
-    "tickets": ["get", "update", "comment"]
+    "tickets": ["get", "update", "comment"],
+    "soul": ["journal_reflect"]
   }
 }
