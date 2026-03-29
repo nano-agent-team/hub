@@ -10,6 +10,16 @@
     "agent.chat-agent.task"
   ],
   "mcp_permissions": {
-    "soul": ["send_to_consciousness", "answer_question", "journal_log"]
-  }
+    "tickets": [],
+    "soul": [
+      "send_to_consciousness",
+      "answer_question",
+      "journal_log"
+    ]
+  },
+  "icon": "💬",
+  "shards": [
+    "architecture",
+    "communication"
+  ]
 }

@@ -14,11 +14,15 @@
   "publish_topics": [
     "topic.dev.done"
   ],
+  "shards": ["code-quality", "security"],
   "mcp_permissions": {
     "tickets": [
       "get",
       "update",
       "comment"
+    ],
+    "soul": [
+      "journal_reflect"
     ]
   },
   "allowedTools": [

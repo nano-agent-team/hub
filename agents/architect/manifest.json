@@ -1,7 +1,7 @@
 {
   "id": "architect",
   "name": "Software Architect",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Writes technical spec into ticket body, designs solution architecture",
   "model": "claude-opus-4-5",
   "session_type": "stateless",
@@ -12,5 +12,14 @@
     "inbox",
     "task"
   ],
-  "allowedTools": ["Skill"]
+  "allowedTools": [
+    "Skill"
+  ],
+  "mcp_permissions": {
+    "soul": [
+      "publish_signal"
+    ],
+    "tickets": []
+  },
+  "icon": "🏗️"
 }

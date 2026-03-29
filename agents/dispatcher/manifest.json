@@ -1,8 +1,8 @@
 {
   "id": "dispatcher",
   "name": "Dispatcher",
-  "version": "0.1.0",
-  "description": "Decomposes plans into tasks, assigns to foreman/dev, tracks completion",
+  "version": "0.2.0",
+  "description": "Decomposes plans into tasks, discovers available agents, dispatches dynamically, tracks completion",
   "model": "claude-sonnet-4-6",
   "session_type": "persistent",
   "subscribe_topics": [
@@ -10,17 +10,43 @@
     "agent.dispatcher.task",
     "soul.plan.ready",
     "pipeline.task.done",
-    "pipeline.task.rejected"
+    "pipeline.task.rejected",
+    "pipeline.task.failed"
   ],
   "outputs": [
-    { "port": "assign_foreman", "subject": "agent.foreman.task" },
-    { "port": "assign_dev", "subject": "agent.dev.task" },
-    { "port": "plan_done", "subject": "soul.plan.done" },
-    { "port": "ask_user", "subject": "soul.ask_user" },
-    { "port": "noop", "subject": "pipeline.task.noop" }
+    {
+      "port": "escalate",
+      "subject": "soul.consciousness.inbox"
+    },
+    {
+      "port": "plan_done",
+      "subject": "soul.plan.done"
+    },
+    {
+      "port": "ask_user",
+      "subject": "soul.ask_user"
+    },
+    {
+      "port": "noop",
+      "subject": "pipeline.task.noop"
+    }
   ],
   "mcp_permissions": {
-    "soul": ["journal_log", "ask_user", "publish_signal"]
+    "tickets": [],
+    "config": [],
+    "management": [],
+    "soul": [
+      "journal_log",
+      "ask_user",
+      "publish_signal",
+      "dispatch_task",
+      "list_agents",
+      "journal_reflect"
+    ]
   },
-  "obsidian_mount": true
+  "obsidian_mount": true,
+  "icon": "📡",
+  "shards": [
+    "architecture"
+  ]
 }

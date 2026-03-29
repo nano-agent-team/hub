@@ -5,6 +5,9 @@
   "model": "claude-sonnet-4-6",
   "session_type": "persistent",
   "version": "2.0.0",
+  "shards": [
+    "architecture"
+  ],
   "subscribe_topics": [
     "agent.conscience.inbox",
     "agent.conscience.task",
@@ -12,12 +15,28 @@
     "soul.conscience.dialogue"
   ],
   "outputs": [
-    { "port": "idea_approved", "subject": "soul.idea.approved" },
-    { "port": "idea_rejected", "subject": "soul.idea.rejected" },
-    { "port": "idea_boundary", "subject": "soul.idea.boundary" }
+    {
+      "port": "idea_approved",
+      "subject": "soul.idea.approved"
+    },
+    {
+      "port": "idea_rejected",
+      "subject": "soul.idea.rejected"
+    },
+    {
+      "port": "idea_boundary",
+      "subject": "soul.idea.boundary"
+    }
   ],
   "mcp_permissions": {
-    "soul": ["update_idea", "journal_log", "publish_signal"]
+    "tickets": [],
+    "soul": [
+      "update_idea",
+      "journal_log",
+      "publish_signal",
+      "journal_reflect"
+    ]
   },
-  "obsidian_mount": true
+  "obsidian_mount": true,
+  "icon": "⚖️"
 }

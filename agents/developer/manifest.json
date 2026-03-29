@@ -1,7 +1,7 @@
 {
   "id": "developer",
   "name": "Software Developer",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Implements features according to tech spec. RW workspace mount, no secrets. Runs unit tests internally. Delegates git operations to Committer.",
   "model": "claude-sonnet-4-5",
   "session_type": "stateless",
@@ -13,5 +13,14 @@
     "inbox",
     "task"
   ],
-  "allowedTools": ["Skill"]
+  "allowedTools": [
+    "Skill"
+  ],
+  "mcp_permissions": {
+    "soul": [
+      "publish_signal"
+    ],
+    "tickets": []
+  },
+  "icon": "💻"
 }

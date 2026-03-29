@@ -15,11 +15,15 @@
     "topic.review.passed",
     "topic.dev.retry"
   ],
+  "shards": ["code-quality"],
   "mcp_permissions": {
     "tickets": [
       "get",
       "update",
       "comment"
+    ],
+    "soul": [
+      "journal_reflect"
     ]
   },
   "allowedTools": [

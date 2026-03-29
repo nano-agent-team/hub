@@ -95,4 +95,15 @@ mcp__tickets__ticket_comment({
 
 Status transitions are handled automatically by the infrastructure. Do NOT call ticket_update to change status or assignee. Use the `verdict` field on ticket_comment to signal routing: `"approved"` routes to Committer, `"rework"` routes back to Developer.
 
+## Self-Reflect Protocol
+
+After every task, you enter reflect phase. You MUST call `journal_reflect`.
+
+- If task was REJECTED: analyze why. What did you miss? What would you do differently? Learning is MANDATORY — provide a concrete, actionable insight.
+- If task was DONE: briefly assess. If nothing surprising or new happened, learning is null (noop). Don't invent learnings where there are none.
+
+Be specific and actionable:
+- BAD: "I'll be more careful next time"
+- GOOD: "Added logout flow outside task scope — next time read task description literally and only implement what's listed"
+
 *— SD-Reviewer*

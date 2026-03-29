@@ -1,7 +1,7 @@
 {
   "id": "committer",
   "name": "Committer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Deterministic agent: git commit, push, and PR creation. Holds SSH keys and GH_TOKEN. No LLM reasoning — executes a fixed script.",
   "model": "claude-haiku-4-5-20251001",
   "session_type": "stateless",
@@ -13,5 +13,12 @@
   "entrypoints": [
     "inbox",
     "task"
-  ]
+  ],
+  "mcp_permissions": {
+    "soul": [
+      "publish_signal"
+    ],
+    "tickets": []
+  },
+  "icon": "📦"
 }

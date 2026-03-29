@@ -1,7 +1,7 @@
 {
   "id": "tester",
   "name": "QA Tester",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Builds and tests PRs against acceptance criteria from spec",
   "model": "claude-sonnet-4-5",
   "session_type": "stateless",
@@ -12,5 +12,12 @@
   "entrypoints": [
     "inbox",
     "task"
-  ]
+  ],
+  "mcp_permissions": {
+    "soul": [
+      "publish_signal"
+    ],
+    "tickets": []
+  },
+  "icon": "🧪"
 }

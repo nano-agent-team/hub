@@ -9,7 +9,9 @@
   "entrypoints": ["inbox", "task"],
   "subscribe_topics": ["agent.sd-committer.inbox", "agent.sd-committer.task"],
   "publish_topics": ["topic.commit.done"],
+  "shards": ["security"],
   "mcp_permissions": {
-    "tickets": ["get", "update", "comment"]
+    "tickets": ["get", "update", "comment"],
+    "soul": ["journal_reflect"]
   }
 }
