@@ -6,7 +6,6 @@
   "session_type": "persistent",
   "version": "2.0.0",
   "shards": [
-    "communication",
     "architecture"
   ],
   "subscribe_topics": [

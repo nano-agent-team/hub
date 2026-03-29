@@ -2,3 +2,4 @@ node_modules/
 plugin-dist/
 teams/*/node_modules/
 teams/*/plugin-dist/
+data.self-dev-pipeline/
